@@ -174,13 +174,23 @@ public class TestSocialMediaIcons {
             System.out.println("The name of the button is info@mysite.com");
 
             button.click();
-           //am citit ca selenium nu poate face translatie pe alt browser pentru test, doar pe alt tab
-            System.out.println("The Mail client has been triggered. Please check manually if the email address is correct.");
+
+            wait11.until(driver -> true);
+
+            //Verify the href attribute contains the mailto link
+            String href = button.getAttribute("href");
+            Assert.assertTrue(href.startsWith("mailto:"), "The Contact link does not contain a 'mailto' link.");
+            System.out.println("The Contact link contain a 'mailto' link.");
+
+            //Check the specific email address if needed
+            Assert.assertTrue(href.contains("info@mysite.com"), "The contact options are not correct.");
+            System.out.println("The contact options are correct.");
+
         }
         else
         {
-            System.out.println("The Mail button is not displayed");
-            Assert.fail();
+//            System.out.println("The Mail button is not displayed");
+            Assert.fail("The Mail button is not displayed");
         }
     }
 
