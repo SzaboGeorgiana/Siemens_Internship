@@ -65,26 +65,26 @@ public class TestSearchWidget {
         WebElement decrementButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .down")));
 //        WebElement decrementButton = driver.findElement(By.cssSelector("#adults .down"));
         WebElement incrementButton = driver.findElement(By.cssSelector("#adults .up"));
-        int counterValue = Integer.parseInt(counterInput.getText());
 
+        int counterValue = Integer.parseInt(counterInput.getText());
         boolean isDecrementButtonDisabled = false;
         if (counterValue == 1) {
-            isDecrementButtonDisabled = decrementButton.getAttribute("disabled") != null || decrementButton.getAttribute("ng-disabled") != null;
+            isDecrementButtonDisabled = decrementButton.getAttribute("disabled") != null;
             System.out.println("The value of adults counter is 1");
-        } else
-        if (counterValue < 1) {
-            Assert.fail("The counter value is below 1");
         }
-        else {
+        else
+            if (counterValue < 1) {
+                Assert.fail("The counter value is below 1");
+            }
+            else {
             // Attempt to decrement the counter and check if it becomes disabled at value 1
             while (counterValue > 1) {
                 decrementButton.click();
-                counterValue = Integer.parseInt(counterInput.getAttribute("value"));
+                counterValue = Integer.parseInt(counterInput.getText());
                 System.out.println("Counter value after decrement: " + counterValue);
-
                 if (counterValue == 1) {
                     // Check if the decrement button is disabled
-                    isDecrementButtonDisabled = decrementButton.getAttribute("disabled") != null || decrementButton.getAttribute("ng-disabled") != null;
+                    isDecrementButtonDisabled = decrementButton.getAttribute("disabled")  != null;
                     break;
                 }
             }
@@ -108,10 +108,7 @@ public class TestSearchWidget {
 
         driver.get("https://ancabota09.wixsite.com/intern");
         System.out.println("Page is loaded successfully");
-
-
         WebElement searchWidget = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("nKphmK")));
-        // i frame       search widget id : i6kppi75
 
 
         if (searchWidget.isDisplayed()) {
@@ -123,10 +120,6 @@ public class TestSearchWidget {
         driver.switchTo().frame(searchWidget);
 
         driver.findElement(By.id("check-in")).click();
-        WebElement checkInField = driver.findElement(By.id("check-in"));
-        WebElement checkOutField = driver.findElement(By.id("check-out"));
-
-        checkInField.click();
 
         driver.switchTo().defaultContent(); //back to main
         WebElement checkinFrame = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("U73P_q")));
@@ -220,10 +213,6 @@ public class TestSearchWidget {
         driver.switchTo().frame(searchWidget);
 
         driver.findElement(By.id("check-in")).click();
-        WebElement checkInField = driver.findElement(By.id("check-in"));
-        WebElement checkOutField = driver.findElement(By.id("check-out"));
-
-        checkInField.click();
 
         driver.switchTo().defaultContent(); //back to main
         WebElement checkinFrame = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("U73P_q")));
@@ -398,10 +387,6 @@ public class TestSearchWidget {
         driver.switchTo().frame(searchWidget);
 
         driver.findElement(By.id("check-in")).click();
-        WebElement checkInField = driver.findElement(By.id("check-in"));
-        WebElement checkOutField = driver.findElement(By.id("check-out"));
-
-        checkInField.click();
 
         driver.switchTo().defaultContent(); //back to main
         WebElement checkinFrame = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("U73P_q")));
@@ -571,10 +556,6 @@ public class TestSearchWidget {
         driver.switchTo().frame(searchWidget);
 
         driver.findElement(By.id("check-in")).click();
-        WebElement checkInField = driver.findElement(By.id("check-in"));
-        WebElement checkOutField = driver.findElement(By.id("check-out"));
-
-        checkInField.click();
 
         driver.switchTo().defaultContent(); //back to main
         WebElement checkinFrame = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("U73P_q")));
