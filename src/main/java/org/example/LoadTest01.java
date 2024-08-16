@@ -28,7 +28,6 @@ public class LoadTest01 {
     public void beforeClass() {
         driver = new ChromeDriver();
     }
-
     @AfterClass
     public void afterClass() {
         driver.quit();
