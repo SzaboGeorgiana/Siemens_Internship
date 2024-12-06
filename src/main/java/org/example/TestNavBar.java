@@ -66,7 +66,7 @@ public class TestNavBar {
     public void verifyExploreButton() {
 
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        System.out.println("Loaded successfully");
+        System.out.println("Loaded successfull");
 
         driver.get("https://ancabota09.wixsite.com/intern");
         System.out.println("Page is loaded successfully");
