@@ -64,7 +64,6 @@ public class TestContactPage {
         }
     }
 
-
     @Test
     public void validateConfirmationMessageInitiallyHidden() {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
