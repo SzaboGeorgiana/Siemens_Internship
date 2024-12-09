@@ -1,4 +1,4 @@
-image:  selenium/standalone-chrome:* # Asigură-te că utilizezi cea mai recentă versiune
+image:  selenium/standalone-chrome:4.14.0-20231107 # Asigură-te că utilizezi cea mai recentă versiune
 
 
 build-job:
