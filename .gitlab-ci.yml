@@ -76,16 +76,16 @@ selenium_tests:
     # 2. Execute env preparation script
     - |
       echo "Preparing environment..."
-      chmod +x ./prepare_environment.sh
-      dos2unix ./prepare_environment.sh 
-      ./prepare_environment.sh
+      chmod +x ./env.sh
+      dos2unix ./env.sh 
+      ./env.sh
 
     # 3. Execute proxy configuration script
     - |
       echo "Setting up Maven proxy configuration..."
-      chmod +x ./configure_maven_proxy.sh
-      dos2unix ./configure_maven_proxy.sh 
-      ./configure_maven_proxy.sh
+      chmod +x ./config_proxy.sh
+      dos2unix ./config_proxy.sh 
+      ./config_proxy.sh
 
   script:
     # Run Maven tests with debug output for troubleshooting
