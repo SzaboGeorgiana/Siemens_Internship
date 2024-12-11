@@ -54,7 +54,7 @@ stages:
 
 selenium_tests:
   stage: selenium_tests
-  image: ubuntu:22.04
+  image: maven:3.9.8
   variables:
     # Cache Maven dependencies for faster builds
     MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
