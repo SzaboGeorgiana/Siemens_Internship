@@ -47,4 +47,4 @@ fi
 
 # Verificăm versiunile instalate
 google-chrome --version
-chromedriver --version
+# chromedriver --version
