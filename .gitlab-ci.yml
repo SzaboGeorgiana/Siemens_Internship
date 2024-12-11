@@ -25,16 +25,83 @@ image: maven:3.9.4
 #   script:
 #     - echo "Deploying to production from the $CI_COMMIT_BRANCH branch"
 #   environment: production
-variables:
-  CODE_PROXY_HOST: "proxy.example.com"
-  CODE_PROXY_PORT: "8080"
-  CODE_NO_PROXY: "localhost,127.0.0.1,.example.org"
 
-before_script:
-  - mkdir -p ~/.m2
-  - cp settings.xml ~/.m2/settings.xml
 
-build:
-  stage: build
+
+
+
+# variables:
+#   CODE_PROXY_HOST: "proxy.example.com"
+#   CODE_PROXY_PORT: "8080"
+#   CODE_NO_PROXY: "localhost,127.0.0.1,.example.org"
+
+# before_script:
+#   - mkdir -p ~/.m2
+#   - cp settings.xml ~/.m2/settings.xml
+
+# build:
+#   stage: build
+#   script:
+#     - mvn clean install --settings ~/.m2/settings.xml
+
+
+# GitLab CI/CD Configuration for Running Selenium Tests
+# This pipeline is designed to execute Maven-based Selenium tests efficiently.
+# Stages are sequential, and jobs within each stage run in parallel.
+
+stages:
+  - selenium_tests  # Renamed stage for clarity
+
+selenium_tests:
+  stage: selenium_tests
+  image: ubuntu:22.04
+  variables:
+    # Cache Maven dependencies for faster builds
+    MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+    # Configure proxies using environment variables from the runner machine
+    http_proxy: $CODE_PROXY
+    https_proxy: $CODE_PROXY
+    HTTP_PROXY: $CODE_PROXY
+    HTTPS_PROXY: $CODE_PROXY
+    no_proxy: $CODE_NO_PROXY
+    NO_PROXY: $CODE_NO_PROXY
+
+  before_script:
+    # 1. Install required packages (minimal installation for the pipeline)
+    - |
+      echo "Installing required dependencies..."
+      apt-get update && apt-get install -y wget unzip curl gnupg dos2unix maven
+
+    # 2. Execute env preparation script
+    - |
+      echo "Preparing environment..."
+      chmod +x ./prepare_environment.sh
+      dos2unix ./prepare_environment.sh 
+      ./prepare_environment.sh
+
+    # 3. Execute proxy configuration script
+    - |
+      echo "Setting up Maven proxy configuration..."
+      chmod +x ./configure_maven_proxy.sh
+      dos2unix ./configure_maven_proxy.sh 
+      ./configure_maven_proxy.sh
+
   script:
-    - mvn clean install --settings ~/.m2/settings.xml
+    # Run Maven tests with debug output for troubleshooting
+    - echo "Running Selenium tests..."
+    - mvn clean test -X
+
+  artifacts:
+    paths:
+      # Collect Maven test results for further analysis
+      - target/surefire-reports/
+    expire_in: 1 week  # Artifacts expire after 1 week
+
+  cache:
+    paths:
+      # Cache Maven dependencies to speed up subsequent builds
+      - .m2/repository
+
+
+
