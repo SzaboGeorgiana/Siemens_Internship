@@ -32,7 +32,7 @@ variables:
 
 before_script:
   - mkdir -p ~/.m2
-  - cp .ci/settings.xml ~/.m2/settings.xml
+  - cp settings.xml ~/.m2/settings.xml
 
 build:
   stage: build
