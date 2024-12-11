@@ -68,7 +68,7 @@ selenium_tests:
     NO_PROXY: $CODE_NO_PROXY
 
   before_script:
-    # 1. Install required packages (minimal installation for the pipeline)
+    # 1. Install required packages (minimal installation for the pipeline
     - |
       echo "Installing required dependencies..."
       apt-get update && apt-get install -y wget unzip curl gnupg dos2unix maven
