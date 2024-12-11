@@ -16,11 +16,18 @@ import static java.awt.SystemColor.text;
 
 public class TestNavBar {
 
-    private WebDriver driver;
+     private WebDriver driver;
 
     @BeforeClass
     public void beforeClass() {
-        driver = new ChromeDriver();
+        // driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+         driver = new ChromeDriver(options);
+
     }
 
     @AfterClass
