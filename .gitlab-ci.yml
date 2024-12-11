@@ -73,6 +73,11 @@ selenium_tests:
       echo "Installing required dependencies..."
       apt-get update && apt-get install -y wget unzip curl gnupg dos2unix maven
 
+    - |
+        echo "Setting up Xvfb for headless Chrome..."
+        Xvfb :99 &  # Rulează un server virtual de display
+        export DISPLAY=:99  # Setează variabila DISPLAY pentru Chrome
+    
     # 2. Execute env preparation script
     - |
       echo "Preparing environment..."
