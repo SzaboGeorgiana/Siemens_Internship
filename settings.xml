@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+  <!-- Proxy configuration -->
+  <proxies>
+    <proxy>
+      <id>company-proxy</id>
+      <active>true</active>
+      <protocol>http</protocol>
+      <host>${env.CODE_PROXY_HOST}</host>
+      <port>${env.CODE_PROXY_PORT}</port>
+      <nonProxyHosts>${env.CODE_NO_PROXY}</nonProxyHosts>
+    </proxy>
+    <proxy>
+      <id>secure-proxy</id>
+      <active>true</active>
+      <protocol>https</protocol>
+      <host>${env.CODE_PROXY_HOST}</host>
+      <port>${env.CODE_PROXY_PORT}</port>
+      <nonProxyHosts>${env.CODE_NO_PROXY}</nonProxyHosts>
+    </proxy>
+  </proxies>
+
+  <!-- Mirrors configuration -->
+  <mirrors>
+    <mirror>
+      <id>central</id>
+      <name>Maven Central</name>
+      <url>https://repo.maven.apache.org/maven2</url>
+      <mirrorOf>central</mirrorOf>
+    </mirror>
+  </mirrors>
+
+  <!-- Plugin repositories -->
+  <pluginRepositories>
+    <pluginRepository>
+      <id>central</id>
+      <url>https://repo.maven.apache.org/maven2</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+</settings>
