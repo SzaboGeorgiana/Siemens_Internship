@@ -2,26 +2,39 @@
 image: maven:3.9.4
 
 
-build-job:
+# build-job:
+#   stage: build
+#   script:
+#     - echo "Hello, $GITLAB_USER_LOGIN!"
+#     - mvn clean compile # Compilează codul sursă folosind Maven
+
+# test-job1:
+#   stage: test
+#   script:
+#     - echo "Running quick tests"
+#     - mvn test -Dtest=org.example.TestNavBar # Rulează testele specifice definite în TestNG
+
+# test-job2:
+#   stage: test
+#   script:
+#     - echo "Running comprehensive tests"
+#     - mvn test # Rulează toate testele
+
+# deploy-prod:
+#   stage: deploy
+#   script:
+#     - echo "Deploying to production from the $CI_COMMIT_BRANCH branch"
+#   environment: production
+variables:
+  CODE_PROXY_HOST: "proxy.example.com"
+  CODE_PROXY_PORT: "8080"
+  CODE_NO_PROXY: "localhost,127.0.0.1,.example.org"
+
+before_script:
+  - mkdir -p ~/.m2
+  - cp .ci/settings.xml ~/.m2/settings.xml
+
+build:
   stage: build
   script:
-    - echo "Hello, $GITLAB_USER_LOGIN!"
-    - mvn clean compile # Compilează codul sursă folosind Maven
-
-test-job1:
-  stage: test
-  script:
-    - echo "Running quick tests"
-    - mvn test -Dtest=org.example.TestNavBar # Rulează testele specifice definite în TestNG
-
-test-job2:
-  stage: test
-  script:
-    - echo "Running comprehensive tests"
-    - mvn test # Rulează toate testele
-
-deploy-prod:
-  stage: deploy
-  script:
-    - echo "Deploying to production from the $CI_COMMIT_BRANCH branch"
-  environment: production
+    - mvn clean install --settings ~/.m2/settings.xml
