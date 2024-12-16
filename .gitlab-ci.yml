@@ -101,6 +101,10 @@ selenium_tests:
     paths:
       # Collect Maven test results for further analysis
       - target/surefire-reports/
+    reports:
+      junit: target/surefire-reports/*.xml  # Parse JUnit XML reports
+
+
     expire_in: 1 week  # Artifacts expire after 1 week
 
   cache:
