@@ -1,24 +1,20 @@
-# image:  selenium/standalone-chrome:latest 
-# image: maven:3.9.4
-
-
 # build-job:
 #   stage: build
 #   script:
 #     - echo "Hello, $GITLAB_USER_LOGIN!"
-#     - mvn clean compile # Compilează codul sursă folosind Maven
+#     - echo "Aici compilează ulterior codul sursă folosind Maven folosind comanda mvn clean compile"
 
 # test-job1:
 #   stage: test
 #   script:
 #     - echo "Running quick tests"
-#     - mvn test -Dtest=org.example.TestNavBar # Rulează testele specifice definite în TestNG
+#     - echo "Aici rulează ulterior testele specifice definite în TestNG folosind comanda mvn test -Dtest=org.example.TestNavBar"
 
 # test-job2:
 #   stage: test
 #   script:
 #     - echo "Running comprehensive tests"
-#     - mvn test # Rulează toate testele
+#     - echo "Aici rulează ulterior toate testele folosind Maven folosind comanda mvn test"
 
 # deploy-prod:
 #   stage: deploy
@@ -29,31 +25,18 @@
 
 
 
-
-# variables:
-#   CODE_PROXY_HOST: "proxy.example.com"
-#   CODE_PROXY_PORT: "8080"
-#   CODE_NO_PROXY: "localhost,127.0.0.1,.example.org"
-
-# before_script:
-#   - mkdir -p ~/.m2
-#   - cp settings.xml ~/.m2/settings.xml
-
-# build:
-#   stage: build
-#   script:
-#     - mvn clean install --settings ~/.m2/settings.xml
+# image:  selenium/standalone-chrome:latest 
+# image: maven:3.9.4
 
 
-# GitLab CI/CD Configuration for Running Selenium Tests
-# This pipeline is designed to execute Maven-based Selenium tests efficiently.
-# Stages are sequential, and jobs within each stage run in parallel.
+
+# #de aici in jos codu bun
 
 stages:
-  - selenium_tests  # Renamed stage for clarity
+  - all_tests_stage
 
-selenium_tests:
-  stage: selenium_tests
+all_tests_stage:
+  stage: all_tests_stage
   image: ubuntu:22.04
   variables:
     # Cache Maven dependencies for faster builds

@@ -4,6 +4,7 @@
         <classes>
             <class name="org.example.TestNavBar" />
             <class name="org.example.TestSocialMediaIcons" />
+            <class name="org.example.TestChatWidget" />
 
         </classes>
     </test>
