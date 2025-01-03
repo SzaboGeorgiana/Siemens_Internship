@@ -1,123 +1,99 @@
-# image:  selenium/standalone-chrome:latest 
-# image: maven:3.9.4
-
-
-build-job:
-  stage: build
-  script:
-    - echo "Hello, $GITLAB_USER_LOGIN!"
-    - echo "Aici compilează ulterior codul sursă folosind Maven folosind comanda mvn clean compile"
-
-test-job1:
-  stage: test
-  script:
-    - echo "Running quick tests"
-    - echo "Aici rulează ulterior testele specifice definite în TestNG folosind comanda mvn test -Dtest=org.example.TestNavBar"
-
-test-job2:
-  stage: test
-  script:
-    - echo "Running comprehensive tests"
-    - echo "Aici rulează ulterior toate testele folosind Maven folosind comanda mvn test"
-
-deploy-prod:
-  stage: deploy
-  script:
-    - echo "Deploying to production from the $CI_COMMIT_BRANCH branch"
-  environment: production
-
-
-
-
-
-# variables:
-#   CODE_PROXY_HOST: "proxy.example.com"
-#   CODE_PROXY_PORT: "8080"
-#   CODE_NO_PROXY: "localhost,127.0.0.1,.example.org"
-
-# before_script:
-#   - mkdir -p ~/.m2
-#   - cp settings.xml ~/.m2/settings.xml
-
-# build:
+# build-job:
 #   stage: build
 #   script:
-#     - mvn clean install --settings ~/.m2/settings.xml
+#     - echo "Hello, $GITLAB_USER_LOGIN!"
+#     - echo "Aici compilează ulterior codul sursă folosind Maven folosind comanda mvn clean compile"
+
+# test-job1:
+#   stage: test
+#   script:
+#     - echo "Running quick tests"
+#     - echo "Aici rulează ulterior testele specifice definite în TestNG folosind comanda mvn test -Dtest=org.example.TestNavBar"
+
+# test-job2:
+#   stage: test
+#   script:
+#     - echo "Running comprehensive tests"
+#     - echo "Aici rulează ulterior toate testele folosind Maven folosind comanda mvn test"
+
+# deploy-prod:
+#   stage: deploy
+#   script:
+#     - echo "Deploying to production from the $CI_COMMIT_BRANCH branch"
+#   environment: production
 
 
-# GitLab CI/CD Configuration for Running Selenium Tests
-# This pipeline is designed to execute Maven-based Selenium tests efficiently.
-# Stages are sequential, and jobs within each stage run in parallel.
 
 
-
+# image:  selenium/standalone-chrome:latest 
+# image: maven:3.9.4
 
 
 
 # #de aici in jos codu bun
 
-# stages:
-#   - selenium_tests  # Renamed stage for clarity
+stages:
+  - all_tests_stage
 
-# selenium_tests:
-#   stage: selenium_tests
-#   image: ubuntu:22.04
-#   variables:
-#     # Cache Maven dependencies for faster builds
-#     MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+all_tests_stage:
+  stage: all_tests_stage
+  image: ubuntu:22.04
+  variables:
+    # Cache Maven dependencies for faster builds
+    MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
 
-#     # Configure proxies using environment variables from the runner machine
-#     http_proxy: $CODE_PROXY
-#     https_proxy: $CODE_PROXY
-#     HTTP_PROXY: $CODE_PROXY
-#     HTTPS_PROXY: $CODE_PROXY
-#     no_proxy: $CODE_NO_PROXY
-#     NO_PROXY: $CODE_NO_PROXY
+    # Configure proxies using environment variables from the runner machine
+    http_proxy: $CODE_PROXY
+    https_proxy: $CODE_PROXY
+    HTTP_PROXY: $CODE_PROXY
+    HTTPS_PROXY: $CODE_PROXY
+    no_proxy: $CODE_NO_PROXY
+    NO_PROXY: $CODE_NO_PROXY
 
-#   before_script:
-#     # 1. Install required packages (minimal installation for the pipeline
-#     - |
-#       echo "Installing required dependencies..."
-#       apt-get update && apt-get install -y wget unzip curl gnupg dos2unix maven
+  before_script:
+    # 1. Install required packages (minimal installation for the pipeline
+    - |
+      echo "Installing required dependencies..."
+      apt-get update && apt-get install -y wget unzip curl gnupg dos2unix maven
 
-#     - |
-#         echo "Setting up Xvfb for headless Chrome..."
-#         Xvfb :99 &  # Rulează un server virtual de display
-#         export DISPLAY=:99  # Setează variabila DISPLAY pentru Chrome
+    - |
+        echo "Setting up Xvfb for headless Chrome..."
+        Xvfb :99 &  # Rulează un server virtual de display
+        export DISPLAY=:99  # Setează variabila DISPLAY pentru Chrome
     
-#     # 2. Execute env preparation script
-#     - |
-#       echo "Preparing environment..."
-#       chmod +x ./env.sh
-#       dos2unix ./env.sh 
-#       ./env.sh
+    # 2. Execute env preparation script
+    - |
+      echo "Preparing environment..."
+      chmod +x ./env.sh
+      dos2unix ./env.sh 
+      ./env.sh
 
-#     # 3. Execute proxy configuration script
-#     - |
-#       echo "Setting up Maven proxy configuration..."
-#       chmod +x ./config_proxy.sh
-#       dos2unix ./config_proxy.sh 
-#       ./config_proxy.sh
+    # 3. Execute proxy configuration script
+    - |
+      echo "Setting up Maven proxy configuration..."
+      chmod +x ./config_proxy.sh
+      dos2unix ./config_proxy.sh 
+      ./config_proxy.sh
 
-#   script:
-#     # Run Maven tests with debug output for troubleshooting
-#     - echo "Running Selenium tests..."
-#     - mvn clean test -X
+  script:
+    # Run Maven tests with debug output for troubleshooting
+    - echo "Running Selenium tests..."
+    - mvn clean test -X
 
-#   artifacts:
-#     paths:
-#       # Collect Maven test results for further analysis
-#       - target/surefire-reports/
-#     reports:
-#       junit: target/surefire-reports/*.xml  # Parse JUnit XML reports
+  artifacts:
+    paths:
+      # Collect Maven test results for further analysis
+      - target/surefire-reports/
+    reports:
+      junit: target/surefire-reports/*.xml  # Parse JUnit XML reports
 
 
-#     expire_in: 1 week  # Artifacts expire after 1 week
+    expire_in: 1 week  # Artifacts expire after 1 week
 
-#   cache:
-#     paths:
-#       # Cache Maven dependencies to speed up subsequent builds
-#       - .m2/repository
+  cache:
+    paths:
+      # Cache Maven dependencies to speed up subsequent builds
+      - .m2/repository
 
 
 
