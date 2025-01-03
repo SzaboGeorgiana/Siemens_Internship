@@ -22,13 +22,13 @@ public class TestNavBar {
 
     @BeforeClass
     public void beforeClass() {
-        // driver = new ChromeDriver();
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        options.addArguments("--disable-gpu");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-         driver = new ChromeDriver(options);
+         driver = new ChromeDriver();
+//        ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--headless");
+//        options.addArguments("--disable-gpu");
+//        options.addArguments("--no-sandbox");
+//        options.addArguments("--disable-dev-shm-usage");
+//         driver = new ChromeDriver(options);
 
     }
 
@@ -40,7 +40,7 @@ public class TestNavBar {
     @Test
     public void verifyHomeButton() {
 
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
         System.out.println("Loaded successfully");
 
         driver.get("https://ancabota09.wixsite.com/intern");
