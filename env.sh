@@ -35,14 +35,14 @@ if [ -z "$CHROME_VERSION" ]; then
 fi
 
 
-# Definim URL-ul pentru ChromeDriver fixat
-CHROME_DRIVER_URL="https://chromedriver.storage.googleapis.com/100.0.4896.20/chromedriver_linux64.zip"
-# Afişăm URL-ul pentru ChromeDriver
-echo "Using ChromeDriver from URL: $CHROME_DRIVER_URL"
-# Descarcă şi instalează ChromeDriver
-wget -0/tmp/chromedriver.zip "$CHROME_DRIVER_URL"
-unzip/tmp/chromedriver.zip -d /usr/local/bin/
-chmod +x /usr/local/bin/chromedriver
+# # Definim URL-ul pentru ChromeDriver fixat
+# CHROME_DRIVER_URL="https://chromedriver.storage.googleapis.com/100.0.4896.20/chromedriver_linux64.zip"
+# # Afişăm URL-ul pentru ChromeDriver
+# echo "Using ChromeDriver from URL: $CHROME_DRIVER_URL"
+# # Descarcă şi instalează ChromeDriver
+# wget -0/tmp/chromedriver.zip "$CHROME_DRIVER_URL"
+# unzip/tmp/chromedriver.zip -d /usr/local/bin/
+# chmod +x /usr/local/bin/chromedriver
 
 # Verificăm versiunile instalate
 google-chrome --version
