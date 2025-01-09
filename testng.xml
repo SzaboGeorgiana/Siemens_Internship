@@ -5,7 +5,9 @@
             <class name="org.example.TestNavBar" />
             <class name="org.example.TestSocialMediaIcons" />
             <class name="org.example.TestChatWidget" />
-
+            <class name="org.example.TestContactPage" />
+            <class name="org.example.TestExplorePage" />
+            <class name="org.example.TestRoomsPage" />
         </classes>
     </test>
 </suite>
