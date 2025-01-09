@@ -31,83 +31,20 @@
 #
 #
 ## #de aici in jos codu bun
-#
-#stages:
-#  - all_tests_stage
-#
-#all_tests_stage:
-#  stage: all_tests_stage
-#  image: ubuntu:22.04
-#  variables:
-#    # Cache Maven dependencies for faster builds
-#    MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
-#
-#    # Configure proxies using environment variables from the runner machine
-#    http_proxy: $CODE_PROXY
-#    https_proxy: $CODE_PROXY
-#    HTTP_PROXY: $CODE_PROXY
-#    HTTPS_PROXY: $CODE_PROXY
-#    no_proxy: $CODE_NO_PROXY
-#    NO_PROXY: $CODE_NO_PROXY
-#
-#  before_script:
-#    # 1. Install required packages (minimal installation for the pipeline
-#    - |
-#      echo "Installing required dependencies..."
-#      apt-get update && apt-get install -y wget unzip curl gnupg dos2unix maven
-#
-#    - |
-#        echo "Setting up Xvfb for headless Chrome..."
-#        Xvfb :99 &  # Rulează un server virtual de display
-#        export DISPLAY=:99  # Setează variabila DISPLAY pentru Chrome
-#
-#    # 2. Execute env preparation script
-#    - |
-#      echo "Preparing environment..."
-#      chmod +x ./env.sh
-#      dos2unix ./env.sh
-#      ./env.sh
-#
-#    # 3. Execute proxy configuration script
-#    - |
-#      echo "Setting up Maven proxy configuration..."
-#      chmod +x ./config_proxy.sh
-#      dos2unix ./config_proxy.sh
-#      ./config_proxy.sh
-#
-#  script:
-#    # Run Maven tests with debug output for troubleshooting
-#    - echo "Running Selenium tests..."
-#    - mvn clean test -X
-#
-#  artifacts:
-#    paths:
-#      # Collect Maven test results for further analysis
-#      - target/surefire-reports/
-#    reports:
-#      junit: target/surefire-reports/*.xml  # Parse JUnit XML reports
-#
-#
-#    expire_in: 1 week  # Artifacts expire after 1 week
-#
-#  cache:
-#    paths:
-#      # Cache Maven dependencies to speed up subsequent builds
-#      - .m2/repository
-#
-#
-#
-stages:
-  - test_nav_bar
-  - test_contact_page
-  - test_explore_page
-  # - test_Rooms_Page
-  # - test_Chat_Widget
 
-common_job_template: &common_job_template
+stages:
+  - all_tests_stage
+  - test_nav_bar
+  - test_Contact_Page
+  - test_Explore_Page
+all_tests_stage:
+  stage: all_tests_stage
   image: ubuntu:22.04
   variables:
+    # Cache Maven dependencies for faster builds
     MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+    # Configure proxies using environment variables from the runner machine
     http_proxy: $CODE_PROXY
     https_proxy: $CODE_PROXY
     HTTP_PROXY: $CODE_PROXY
@@ -116,57 +53,140 @@ common_job_template: &common_job_template
     NO_PROXY: $CODE_NO_PROXY
 
   before_script:
-    - echo "Installing required dependencies..."
-    - apt-get update && apt-get install -y wget unzip curl gnupg dos2unix maven
-    - echo "Setting up Xvfb for headless Chrome..."
-    - Xvfb :99 &
-    - export DISPLAY=:99
-    - echo "Preparing environment..."
-    - chmod +x ./env.sh
-    - dos2unix ./env.sh
-    - ./env.sh
-    - echo "Setting up Maven proxy configuration..."
-    - chmod +x ./config_proxy.sh
-    - dos2unix ./config_proxy.sh
-    - ./config_proxy.sh
+    # 1. Install required packages (minimal installation for the pipeline
+    - |
+      echo "Installing required dependencies..."
+      apt-get update && apt-get install -y wget unzip curl gnupg dos2unix maven
+
+    - |
+        echo "Setting up Xvfb for headless Chrome..."
+        Xvfb :99 &  # Rulează un server virtual de display
+        export DISPLAY=:99  # Setează variabila DISPLAY pentru Chrome
+
+    # 2. Execute env preparation script
+    - |
+      echo "Preparing environment..."
+      chmod +x ./env.sh
+      dos2unix ./env.sh
+      ./env.sh
+
+    # 3. Execute proxy configuration script
+    - |
+      echo "Setting up Maven proxy configuration..."
+      chmod +x ./config_proxy.sh
+      dos2unix ./config_proxy.sh
+      ./config_proxy.sh
+
+  script:
+    # Run Maven tests with debug output for troubleshooting
+    - echo "Running Selenium tests..."
+    - mvn clean test -X
 
   artifacts:
     paths:
+      # Collect Maven test results for further analysis
       - target/surefire-reports/
     reports:
-      junit: target/surefire-reports/*.xml
-    expire_in: 1 week
+      junit: target/surefire-reports/*.xml  # Parse JUnit XML reports
+
+
+    expire_in: 1 week  # Artifacts expire after 1 week
 
   cache:
     paths:
+      # Cache Maven dependencies to speed up subsequent builds
       - .m2/repository
 
 test_nav_bar:
   stage: test_nav_bar
-  # <<: *common_job_template
+  #    <<: *common_job_template
   script:
     - mvn test -Dtest=org.example.TestNavBar
 
-test_contact_page:
+test_Contact_Page:
   stage: test_Contact_Page
-  # <<: *common_job_template
+  #    <<: *common_job_template
   script:
     - mvn test -Dtest=org.example.ContactPage
 
-test_explore_page:
+test_Explore_Page:
   stage: test_Explore_Page
-  # <<: *common_job_template
+  #    <<: *common_job_template
   script:
     - mvn test -Dtest=org.example.TestExplorePage
 
-# test_Rooms_Page:
-#   stage: test_Rooms_Page
-#   <<: *common_job_template
-#   script:
-#     - mvn test -Dtest=org.example.TestRoomsPage
-
-# test_Chat_Widget:
-#   stage: test_Chat_Widget
-#   <<: *common_job_template
-#   script:
-#     - mvn test -Dtest=org.example.TestChatWidget
+#
+#
+#stages:
+#  - test_nav_bar
+#  - test_Contact_Page
+#  - test_Explore_Page
+#  - test_Rooms_Page
+#  - test_Chat_Widget
+#
+#common_job_template: &common_job_template
+#  image: ubuntu:22.04
+#  variables:
+#    MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+#    http_proxy: $CODE_PROXY
+#    https_proxy: $CODE_PROXY
+#    HTTP_PROXY: $CODE_PROXY
+#    HTTPS_PROXY: $CODE_PROXY
+#    no_proxy: $CODE_NO_PROXY
+#    NO_PROXY: $CODE_NO_PROXY
+#
+#  before_script:
+#    - echo "Installing required dependencies..."
+#    - apt-get update && apt-get install -y wget unzip curl gnupg dos2unix maven
+#    - echo "Setting up Xvfb for headless Chrome..."
+#    - Xvfb :99 &
+#    - export DISPLAY=:99
+#    - echo "Preparing environment..."
+#    - chmod +x ./env.sh
+#    - dos2unix ./env.sh
+#    - ./env.sh
+#    - echo "Setting up Maven proxy configuration..."
+#    - chmod +x ./config_proxy.sh
+#    - dos2unix ./config_proxy.sh
+#    - ./config_proxy.sh
+#
+#  artifacts:
+#    paths:
+#      - target/surefire-reports/
+#    reports:
+#      junit: target/surefire-reports/*.xml
+#    expire_in: 1 week
+#
+#  cache:
+#    paths:
+#      - .m2/repository
+#
+#test_nav_bar:
+#  stage: test_nav_bar
+#  <<: *common_job_template
+#  script:
+#    - mvn test -Dtest=org.example.TestNavBar
+#
+#test_Contact_Page:
+#  stage: test_Contact_Page
+#  <<: *common_job_template
+#  script:
+#    - mvn test -Dtest=org.example.ContactPage
+#
+#test_Explore_Page:
+#  stage: test_Explore_Page
+#  <<: *common_job_template
+#  script:
+#    - mvn test -Dtest=org.example.TestExplorePage
+#
+#test_Rooms_Page:
+#  stage: test_Rooms_Page
+#  <<: *common_job_template
+#  script:
+#    - mvn test -Dtest=org.example.TestRoomsPage
+#
+#test_Chat_Widget:
+#  stage: test_Chat_Widget
+#  <<: *common_job_template
+#  script:
+#    - mvn test -Dtest=org.example.TestChatWidget
