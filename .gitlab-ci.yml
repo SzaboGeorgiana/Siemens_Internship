@@ -146,6 +146,12 @@ test_nav_bar:
   script:
    - mvn test -Dtest=org.example.TestNavBar
 
+test_footer:
+  stage: run_individual_tests
+  <<: *default_template
+  script:
+   - mvn test -Dtest=org.example.TestSocialMediaIcons
+
 test_contact_page:
   stage: run_individual_tests
   <<: *default_template
@@ -154,19 +160,19 @@ test_contact_page:
 
 test_explore_page:
  stage: run_individual_tests
- <<: *common_job_template
+ <<: *default_template
  script:
    - mvn test -Dtest=org.example.TestExplorePage
 
 test_rooms_page:
  stage: run_individual_tests
- <<: *common_job_template
+ <<: *default_template
  script:
    - mvn test -Dtest=org.example.TestRoomsPage
 
 test_chat_widget:
  stage: run_individual_tests
- <<: *common_job_template
+ <<: *default_template
  script:
    - mvn test -Dtest=org.example.TestChatWidget
 
