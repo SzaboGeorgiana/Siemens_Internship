@@ -210,6 +210,8 @@ test_chinatown_photo:
   script:
     - echo "Running verifyChinaTownPhoto test..."
     - mvn test -Dtest="org.example.TestExplorePage#verifyChinaTownPhoto"
+    - mvn test -Dtest="org.example.TestExplorePage#verifyGondenGateBridgePhoto"
+
   artifacts:
     paths:
       - target/surefire-reports/
