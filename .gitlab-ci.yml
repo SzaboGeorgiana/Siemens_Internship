@@ -209,7 +209,7 @@ test_chinatown_photo:
     - ./config_proxy.sh
   script:
     - echo "Running verifyChinaTownPhoto test..."
-    - mvn test -Dtest = "org.example.TestExplorePage#verifyChinaTownPhoto"
+    - mvn test -Dtest="org.example.TestExplorePage#verifyChinaTownPhoto"
   artifacts:
     paths:
       - target/surefire-reports/
