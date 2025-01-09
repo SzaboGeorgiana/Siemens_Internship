@@ -179,45 +179,129 @@
 #
 #
 
+# stages:
+#   - run_individual_tests_proba
+
+# test_chinatown_photo:
+#   stage: run_individual_tests
+#   image: ubuntu:22.04
+#   variables:
+#     MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+#     http_proxy: $CODE_PROXY
+#     https_proxy: $CODE_PROXY
+#     HTTP_PROXY: $CODE_PROXY
+#     HTTPS_PROXY: $CODE_PROXY
+#     no_proxy: $CODE_NO_PROXY
+#     NO_PROXY: $CODE_NO_PROXY
+#   before_script:
+#     - echo "Installing required dependencies..."
+#     - apt-get update && apt-get install -y wget unzip curl gnupg dos2unix maven
+#     - echo "Setting up Xvfb for headless Chrome..."
+#     - Xvfb :99 &
+#     - export DISPLAY=:99
+#     - echo "Preparing environment..."
+#     - chmod +x ./env.sh
+#     - dos2unix ./env.sh
+#     - ./env.sh
+#     - echo "Setting up Maven proxy configuration..."
+#     - chmod +x ./config_proxy.sh
+#     - dos2unix ./config_proxy.sh
+#     - ./config_proxy.sh
+#   script:
+#     - echo "Running verifyChinaTownPhoto test..."
+#     - mvn test -Dtest="org.example.TestExplorePage#verifyChinaTownPhoto+verifyGondenGateBridgePhoto"
+
+#   artifacts:
+#     paths:
+#       - target/surefire-reports/
+#     reports:
+#       junit: target/surefire-reports/*.xml
+#   cache:
+#     paths:
+#       - .m2/repository
+# 
+# 
+
 stages:
-  - run_individual_tests
+#  - run_all_tests
+ - run_individual_individual_tests
 
-test_chinatown_photo:
-  stage: run_individual_tests
-  image: ubuntu:22.04
-  variables:
-    MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
-    http_proxy: $CODE_PROXY
-    https_proxy: $CODE_PROXY
-    HTTP_PROXY: $CODE_PROXY
-    HTTPS_PROXY: $CODE_PROXY
-    no_proxy: $CODE_NO_PROXY
-    NO_PROXY: $CODE_NO_PROXY
-  before_script:
-    - echo "Installing required dependencies..."
-    - apt-get update && apt-get install -y wget unzip curl gnupg dos2unix maven
-    - echo "Setting up Xvfb for headless Chrome..."
-    - Xvfb :99 &
-    - export DISPLAY=:99
-    - echo "Preparing environment..."
-    - chmod +x ./env.sh
-    - dos2unix ./env.sh
-    - ./env.sh
-    - echo "Setting up Maven proxy configuration..."
-    - chmod +x ./config_proxy.sh
-    - dos2unix ./config_proxy.sh
-    - ./config_proxy.sh
+.default_template: &default_template
+ image: ubuntu:22.04
+ variables:
+   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+   http_proxy: $CODE_PROXY
+   https_proxy: $CODE_PROXY
+   HTTP_PROXY: $CODE_PROXY
+   HTTPS_PROXY: $CODE_PROXY
+   no_proxy: $CODE_NO_PROXY
+   NO_PROXY: $CODE_NO_PROXY
+
+ before_script:
+   - echo "Installing required dependencies..."
+   - apt-get update && apt-get install -y wget unzip curl gnupg dos2unix maven
+   - echo "Setting up Xvfb for headless Chrome..."
+   - Xvfb :99 &
+   - export DISPLAY=:99
+   - echo "Preparing environment..."
+   - chmod +x ./env.sh
+   - dos2unix ./env.sh
+   - ./env.sh
+   - echo "Setting up Maven proxy configuration..."
+   - chmod +x ./config_proxy.sh
+   - dos2unix ./config_proxy.sh
+   - ./config_proxy.sh
+
+ artifacts:
+   paths:
+     - target/surefire-reports/
+   reports:
+     junit: target/surefire-reports/*.xml
+   expire_in: 1 week
+
+ cache:
+   paths:
+     - .m2/repository
+
+# test_all:
+#   stage: run_all_tests
+#   <<: *default_template
+#   script:
+#    -  mvn clean test -X #x de la debug
+
+
+test_nav_bar:
+  stage: run_individual_individual_tests
+  <<: *default_template
   script:
-    - echo "Running verifyChinaTownPhoto test..."
-    - mvn test -Dtest="org.example.TestExplorePage#verifyChinaTownPhoto,verifyGondenGateBridgePhoto"
+   - mvn test -Dtest=org.example.TestNavBar#verifyExploreButton
 
-  artifacts:
-    paths:
-      - target/surefire-reports/
-    reports:
-      junit: target/surefire-reports/*.xml
-  cache:
-    paths:
-      - .m2/repository
+test_footer:
+  stage: run_individual_individual_tests
+  <<: *default_template
+  script:
+   - mvn test -Dtest=org.example.TestSocialMediaIcons
 
+test_contact_page:
+  stage: run_individual_individual_tests
+  <<: *default_template
+  script:
+      - mvn test -Dtest=org.example.TestContactPage
 
+test_explore_page:
+ stage: run_individual_individual_tests
+ <<: *default_template
+ script:
+    - mvn test -Dtest="org.example.TestExplorePage#verifyChinaTownPhoto+verifyGondenGateBridgePhoto"
+
+test_rooms_page:
+ stage: run_individual_individual_tests
+ <<: *default_template
+ script:
+   - mvn test -Dtest=org.example.TestRoomsPage#verifyStandardSuiteLink+verifyCottageLink+verifyClassicAppLink
+
+test_chat_widget:
+ stage: run_individual_individual_tests
+ <<: *default_template
+ script:
+   - mvn test -Dtest=org.example.TestChatWidget#testMessage_No_Name
