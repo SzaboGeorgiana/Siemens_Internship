@@ -36,7 +36,7 @@ stages:
   - run_all_tests
   - run_individual_tests
 all_tests_stage:
-  stage: all_tests_stage
+  stage: run_all_tests
   image: ubuntu:22.04
   variables:
     # Cache Maven dependencies for faster builds
