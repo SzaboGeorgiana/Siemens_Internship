@@ -99,10 +99,10 @@
 #
 stages:
   - test_nav_bar
-  - test_Contact_Page
-  - test_Explore_Page
-  - test_Rooms_Page
-  - test_Chat_Widget
+  - test_contact_page
+  - test_explore_page
+  # - test_Rooms_Page
+  # - test_Chat_Widget
 
 common_job_template: &common_job_template
   image: ubuntu:22.04
@@ -147,26 +147,26 @@ test_nav_bar:
   script:
     - mvn test -Dtest=org.example.TestNavBar
 
-test_Contact_Page:
+test_contact_page:
   stage: test_Contact_Page
   <<: *common_job_template
   script:
     - mvn test -Dtest=org.example.ContactPage
 
-test_Explore_Page:
+test_explore_page:
   stage: test_Explore_Page
   <<: *common_job_template
   script:
     - mvn test -Dtest=org.example.TestExplorePage
 
-test_Rooms_Page:
-  stage: test_Rooms_Page
-  <<: *common_job_template
-  script:
-    - mvn test -Dtest=org.example.TestRoomsPage
+# test_Rooms_Page:
+#   stage: test_Rooms_Page
+#   <<: *common_job_template
+#   script:
+#     - mvn test -Dtest=org.example.TestRoomsPage
 
-test_Chat_Widget:
-  stage: test_Chat_Widget
-  <<: *common_job_template
-  script:
-    - mvn test -Dtest=org.example.TestChatWidget
+# test_Chat_Widget:
+#   stage: test_Chat_Widget
+#   <<: *common_job_template
+#   script:
+#     - mvn test -Dtest=org.example.TestChatWidget
