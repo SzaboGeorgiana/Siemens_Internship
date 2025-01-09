@@ -143,19 +143,19 @@ common_job_template: &common_job_template
 
 test_nav_bar:
   stage: test_nav_bar
-  <<: *common_job_template
+  # <<: *common_job_template
   script:
     - mvn test -Dtest=org.example.TestNavBar
 
 test_contact_page:
   stage: test_Contact_Page
-  <<: *common_job_template
+  # <<: *common_job_template
   script:
     - mvn test -Dtest=org.example.ContactPage
 
 test_explore_page:
   stage: test_Explore_Page
-  <<: *common_job_template
+  # <<: *common_job_template
   script:
     - mvn test -Dtest=org.example.TestExplorePage
 
