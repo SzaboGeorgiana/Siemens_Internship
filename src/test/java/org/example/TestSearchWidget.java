@@ -344,7 +344,7 @@ public void setUp() {
 
         if (counterValue == 1) {
             System.out.println("The value of adults counter is 1");
-            WebElement incrementButton =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .up")));
+            WebElement incrementButton =wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#adults .up")));
             incrementButton.click();
             System.out.println("Th");
 
