@@ -274,7 +274,7 @@ test_nav_bar:
   stage: run_individual_individual_tests
   <<: *default_template
   script:
-    - mvn test -Dtest=org.example.TestNavBar#verifyExploreButton
+    - mvn test -Dtest=org.example.TestNavBar
 #
 #test_footer:
 #  stage: run_individual_individual_tests
