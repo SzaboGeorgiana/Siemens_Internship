@@ -223,7 +223,7 @@ public void setUp() {
 
 
     @Test
-    public void SearchWithValidNumberOfAdults() {
+    public void SearchWithValidNumberOfAdults() throws InterruptedException {
 
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -345,8 +345,11 @@ public void setUp() {
         if (counterValue == 1) {
             System.out.println("The value of adults counter is 1");
             WebElement incrementButton =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .up")));
-
             incrementButton.click();
+            System.out.println("Th");
+
+            Thread.sleep(500); // Îl poți înlocui cu o așteptare explicită dacă este nevoie
+
             counterInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value")));
 
             int counterValue1 = Integer.parseInt(counterInput.getText());
