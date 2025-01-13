@@ -9,9 +9,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.time.Duration;
 import java.util.Set;
@@ -24,20 +22,31 @@ public class TestSocialMediaIcons {
 
     private WebDriver driver;
 
-    @BeforeClass
-    public void beforeClass() {
-        // driver = new ChromeDriver();
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        options.addArguments("--disable-gpu");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-         driver = new ChromeDriver(options);
+//    @BeforeClass
+//    public void beforeClass() {
+//        // driver = new ChromeDriver();
+//        ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--headless");
+//        options.addArguments("--disable-gpu");
+//        options.addArguments("--no-sandbox");
+//        options.addArguments("--disable-dev-shm-usage");
+//         driver = new ChromeDriver(options);
+//
+//    }
+//
+//    @AfterClass
+//    public void afterClass() {
+//        driver.quit();
+//    }
+@BeforeMethod
+public void setUp() {
+    ChromeOptions options = new ChromeOptions();
+    options.addArguments("--headless", "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
+    driver = new ChromeDriver(options);
+}
 
-    }
-
-    @AfterClass
-    public void afterClass() {
+    @AfterMethod
+    public void tearDown() {
         driver.quit();
     }
 
@@ -111,7 +120,7 @@ public class TestSocialMediaIcons {
             String currentUrl = driver.getCurrentUrl();
 //            System.out.println("Current URL: " + currentUrl);
 
-            Assert.assertEquals(currentUrl, "https://x.com/wix", "Bad redirect");
+            Assert.assertEquals(currentUrl, "https://x.com/wix?mx=2", "Bad redirect");
             System.out.println("The Twitter page is loaded successfully");
         }
         else

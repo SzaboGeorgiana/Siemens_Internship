@@ -8,9 +8,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -23,23 +21,33 @@ import java.util.concurrent.TimeUnit;
 public class TestSearchInRoomsPage {
 
     private WebDriver driver;
+//
+//    @BeforeClass
+//    public void beforeClass() {
+////        driver = new ChromeDriver();
+//        ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--headless");
+//        options.addArguments("--disable-gpu");
+//        options.addArguments("--no-sandbox");
+//        options.addArguments("--disable-dev-shm-usage");
+//        driver = new ChromeDriver(options);
+//    }
+//    @AfterClass
+//    public void afterClass() {
+//        driver.quit();
+//    }
 
-    @BeforeClass
-    public void beforeClass() {
-//        driver = new ChromeDriver();
+    @BeforeMethod
+    public void setUp() {
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        options.addArguments("--disable-gpu");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--headless",  "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
         driver = new ChromeDriver(options);
     }
-    @AfterClass
-    public void afterClass() {
+
+    @AfterMethod
+    public void tearDown() {
         driver.quit();
     }
-
-
     @Test
     public void verifySearchWith2Adults() {
 

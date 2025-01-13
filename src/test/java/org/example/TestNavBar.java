@@ -6,11 +6,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 import static java.awt.SystemColor.text;
@@ -20,25 +21,37 @@ public class TestNavBar {
 
      private WebDriver driver;
 
-    @BeforeClass
-    public void beforeClass() {
+//    @BeforeClass
+//    public void beforeClass() {
 //         driver = new ChromeDriver();
+////        ChromeOptions options = new ChromeOptions();
+////        options.addArguments("--headless");
+////        options.addArguments("--disable-gpu");
+////        options.addArguments("--no-sandbox");
+////        options.addArguments("--disable-dev-shm-usage");
+////         driver = new ChromeDriver(options);
+//
+//    }
+//
+//    @AfterClass
+//    public void afterClass() {
+//        driver.quit();
+//    }
+    @BeforeMethod
+    public void setUp() {
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        options.addArguments("--disable-gpu");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-         driver = new ChromeDriver(options);
-
+        options.addArguments("--headless", "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
+        driver = new ChromeDriver(options);
     }
 
-    @AfterClass
-    public void afterClass() {
+    @AfterMethod
+    public void tearDown() {
         driver.quit();
     }
 
     @Test
     public void verifyHomeButton() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
         System.out.println("Loaded successfully");
@@ -47,7 +60,8 @@ public class TestNavBar {
         System.out.println("Page is loaded successfully");
 
         String search_text = "HOME";
-        WebElement button = driver.findElement(By.id("i6kl732v0label"));
+//        WebElement button = driver.findElement(By.id("i6kl732v0label"));
+        WebElement button = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"i6kl732v0label\"]")));
 
 
         if (button.isDisplayed()) {

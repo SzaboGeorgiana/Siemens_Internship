@@ -1,6 +1,7 @@
 package org.example;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -8,9 +9,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -23,21 +22,31 @@ import java.util.concurrent.TimeUnit;
 public class TestStandardSuiteRoomPage {
     private WebDriver driver;
 
-    @BeforeClass
-    public void beforeClass() {
-//        driver = new ChromeDriver();
+//    @BeforeClass
+//    public void beforeClass() {
+////        driver = new ChromeDriver();
+//        ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--headless");
+//        options.addArguments("--disable-gpu");
+//        options.addArguments("--no-sandbox");
+//        options.addArguments("--disable-dev-shm-usage");
+//        driver = new ChromeDriver(options);
+//    }
+//    @AfterClass
+//    public void afterClass() {
+//        driver.quit();
+//    }
+    @BeforeMethod
+    public void setUp() {
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        options.addArguments("--disable-gpu");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--headless",  "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
         driver = new ChromeDriver(options);
     }
-    @AfterClass
-    public void afterClass() {
+
+    @AfterMethod
+    public void tearDown() {
         driver.quit();
     }
-
     @Test
     public void verifyImage() {
 
@@ -172,7 +181,7 @@ public class TestStandardSuiteRoomPage {
 
 
     @Test
-    public void verifyMaximumBoundary() {
+    public void verifyMaximumBoundary() throws InterruptedException {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -216,17 +225,57 @@ public class TestStandardSuiteRoomPage {
             System.out.println("The increment button is not disabled at counter value 1");
         }
         // Attempt to INCREMENT
+//        while (counterValue < 6) {
+//            incrementButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .up")));
+//            incrementButton.click();
+//            Thread.sleep(500); // Îl poți înlocui cu o așteptare explicită dacă timpul de răspuns variază
+//
+//            counterValue = Integer.parseInt(counterInput.getText());
+//            System.out.println("Counter value after increment: " + counterValue);
+//
+//            if (counterValue == 6) {
+//                // Check if the decrement button is disabled
+//                isIncrementButtonDisabled = incrementButton.getAttribute("disabled") != null;
+//                break;
+//            }
+//
+//        }
+// Asigură-te că ai initializat counterValue înainte de buclă
         while (counterValue < 6) {
-            incrementButton.click();
-            counterValue = Integer.parseInt(counterInput.getText());
-            System.out.println("Counter value after increment: " + counterValue);
+            try {
+                // Localizează butonul "increment" din nou pentru a evita erorile de tip StaleElementReferenceException
+                incrementButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#adults .up")));
+                incrementButton.click();
 
-            if (counterValue == 6) {
-                // Check if the decrement button is disabled
-                isIncrementButtonDisabled = incrementButton.getAttribute("disabled") != null;
-                break;
+                // Așteaptă puțin pentru ca interfața să actualizeze valoarea
+                Thread.sleep(500); // Îl poți înlocui cu o așteptare explicită dacă este nevoie
+
+                // Actualizează valoarea counterului după fiecare click
+                 counterInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value")));
+                counterValue = Integer.parseInt(counterInput.getText());
+
+                System.out.println("Counter value after increment: " + counterValue);
+
+                // Verifică dacă s-a ajuns la valoarea maximă
+                if (counterValue == 6) {
+                    // Verifică dacă butonul de incrementare este dezactivat
+                    String incrementButtonStatus = incrementButton.getAttribute("disabled");
+                     isIncrementButtonDisabled = incrementButtonStatus != null && incrementButtonStatus.equals("true");
+
+                    if (isIncrementButtonDisabled) {
+                        System.out.println("The increment button is disabled after reaching the maximum value.");
+                    }
+                    break; // Iese din buclă când se ajunge la valoarea maximă
+                }
+
+            } catch (StaleElementReferenceException e) {
+                // Capturăm eroarea de StaleElementReferenceException și încercăm să regăsim elementul
+                System.out.println("Elementul a devenit stale, încerc să-l regăsesc...");
+            } catch (Exception e) {
+                // Capturăm alte erori care ar putea apărea
+                System.out.println("A apărut o eroare: " + e.getMessage());
+                break; // Iese din buclă în caz de eroare
             }
-
         }
 
         if (isIncrementButtonDisabled) {

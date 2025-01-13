@@ -10,9 +10,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.time.Duration;
 import java.util.NoSuchElementException;
@@ -24,21 +22,32 @@ import static java.awt.SystemColor.text;
 
 public class TestChatWidget {
     private WebDriver driver;
+//
+//    @BeforeClass
+//    public void beforeClass() {
+////        driver = new ChromeDriver();
+//        ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--headless");
+//        options.addArguments("--disable-gpu");
+//        options.addArguments("--no-sandbox");
+//        options.addArguments("--disable-dev-shm-usage");
+//        driver = new ChromeDriver(options);
+//    }
+//
+//
+//    @AfterClass
+//    public void afterClass() {
+//        driver.quit();
+//    }
+@BeforeMethod
+public void setUp() {
+    ChromeOptions options = new ChromeOptions();
+    options.addArguments("--headless", "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
+    driver = new ChromeDriver(options);
+}
 
-    @BeforeClass
-    public void beforeClass() {
-//        driver = new ChromeDriver();
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        options.addArguments("--disable-gpu");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-        driver = new ChromeDriver(options);
-    }
-
-
-    @AfterClass
-    public void afterClass() {
+    @AfterMethod
+    public void tearDown() {
         driver.quit();
     }
 
@@ -149,7 +158,7 @@ public class TestChatWidget {
 
         formSubmitButton.click();
 
-        WebElement warningIcon = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("s3R8NnC")));
+        WebElement warningIcon = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("aO5GK")));
         warningIcon.click();
         WebElement errorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[3]")));//*[@id="name-error"]/div/div/svg
         String expectedErrorMessage = "Make sure to add your name.";
@@ -249,7 +258,7 @@ public class TestChatWidget {
         formSubmitButton.click();
 
 // Validate the appearance of the warning icon and error message
-        WebElement warningIcon = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("s3R8NnC")));
+        WebElement warningIcon = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("aO5GK")));
         warningIcon.click();
 
         WebElement errorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[3]")));

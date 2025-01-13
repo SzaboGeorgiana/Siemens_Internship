@@ -2,6 +2,7 @@
 package org.example;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -9,9 +10,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -29,18 +28,29 @@ public class TestSearchWidget {
 
     private WebDriver driver;
 
-    @BeforeClass
-    public void beforeClass() {
-//        driver = new ChromeDriver();
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        options.addArguments("--disable-gpu");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-        driver = new ChromeDriver(options);
-    }
-    @AfterClass
-    public void afterClass() {
+//    @BeforeClass
+//    public void beforeClass() {
+////        driver = new ChromeDriver();
+//        ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--headless");
+//        options.addArguments("--disable-gpu");
+//        options.addArguments("--no-sandbox");
+//        options.addArguments("--disable-dev-shm-usage");
+//        driver = new ChromeDriver(options);
+//    }
+//    @AfterClass
+//    public void afterClass() {
+//        driver.quit();
+//    }
+@BeforeMethod
+public void setUp() {
+    ChromeOptions options = new ChromeOptions();
+    options.addArguments("--headless",  "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
+    driver = new ChromeDriver(options);
+}
+
+    @AfterMethod
+    public void tearDown() {
         driver.quit();
     }
 
@@ -67,10 +77,10 @@ public class TestSearchWidget {
 
         driver.switchTo().frame(searchWidget);
         WebElement counterInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value")));
-//        WebElement counterInput = driver.findElement(By.cssSelector("#adults .value"));
+//        WebElement counterInput =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value"));
         WebElement decrementButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .down")));
-//        WebElement decrementButton = driver.findElement(By.cssSelector("#adults .down"));
-        WebElement incrementButton = driver.findElement(By.cssSelector("#adults .up"));
+//        WebElement decrementButton =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .down"));
+        WebElement incrementButton =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .up")));
 
         int counterValue = Integer.parseInt(counterInput.getText());
         boolean isDecrementButtonDisabled = false;
@@ -149,9 +159,18 @@ public class TestSearchWidget {
         String xpath = String.format("//button[@aria-label='%s']", formattedDate);
         System.out.println(xpath);
 
-        WebElement dateButtonCheckIn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
-        wait.withTimeout(Duration.ofSeconds(30));
-        dateButtonCheckIn.click();
+//        WebElement dateButtonCheckIn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
+////        wait.withTimeout(Duration.ofSeconds(30));
+//        dateButtonCheckIn.click();
+        for (int attempts = 0; attempts < 3; attempts++) {
+            try {
+                WebElement dateButtonCheckIn = driver.findElement(By.xpath(xpath));
+                dateButtonCheckIn.click();
+                break;
+            } catch (StaleElementReferenceException e) {
+                System.out.println("Retrying to click on the calendar date...");
+            }
+        }
 
         /*driver.switchTo().frame(searchWidget);
         checkOutField.click();*/
@@ -175,10 +194,20 @@ public class TestSearchWidget {
         String newFormattedDate = tomorrow.format(formatter);
 
         String newXPath = String.format("//button[@aria-label='%s']", newFormattedDate);
+//
+//        WebElement dateButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(newXPath)));
+//        wait.withTimeout(Duration.ofSeconds(30));
+//        dateButton.click();
+        for (int attempts = 0; attempts < 3; attempts++) {
+            try {
+                WebElement dateButton = driver.findElement(By.xpath(newXPath));
+                dateButton.click();
+                break;
+            } catch (StaleElementReferenceException e) {
+                System.out.println("Retrying to click on the calendar date...");
+            }
+        }
 
-        WebElement dateButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(newXPath)));
-        wait.withTimeout(Duration.ofSeconds(30));
-        dateButton.click();
 
         driver.switchTo().defaultContent(); //back to main
 
@@ -242,10 +271,18 @@ public class TestSearchWidget {
         String xpath = String.format("//button[@aria-label='%s']", formattedDate);
         System.out.println(xpath);
 
-        WebElement dateButtonCheckIn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
-        wait.withTimeout(Duration.ofSeconds(60));
-        dateButtonCheckIn.click();
-
+//        WebElement dateButtonCheckIn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
+//        wait.withTimeout(Duration.ofSeconds(60));
+//        dateButtonCheckIn.click();
+        for (int attempts = 0; attempts < 3; attempts++) {
+            try {
+                WebElement dateButtonCheckIn = driver.findElement(By.xpath(xpath));
+                dateButtonCheckIn.click();
+                break;
+            } catch (StaleElementReferenceException e) {
+                System.out.println("Retrying to click on the calendar date...");
+            }
+        }
         /*driver.switchTo().frame(searchWidget);
         checkOutField.click();*/
 
@@ -276,10 +313,18 @@ public class TestSearchWidget {
 
         String newXPath = String.format("//button[@aria-label='%s']", newFormattedDate);
 
-        WebElement dateButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(newXPath)));
-        wait.withTimeout(Duration.ofSeconds(30));
-        dateButton.click();
-
+//        WebElement dateButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(newXPath)));
+//        wait.withTimeout(Duration.ofSeconds(30));
+//        dateButton.click();
+        for (int attempts = 0; attempts < 3; attempts++) {
+            try {
+                WebElement dateButton = driver.findElement(By.xpath(newXPath));
+                dateButton.click();
+                break;
+            } catch (StaleElementReferenceException e) {
+                System.out.println("Retrying to click on the calendar date...");
+            }
+        }
         driver.switchTo().defaultContent(); //back to main
 
         driver.switchTo().frame(searchWidget);
@@ -291,10 +336,10 @@ public class TestSearchWidget {
 //////////////////////////////////////////
 
         WebElement counterInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value")));
-//        WebElement counterInput = driver.findElement(By.cssSelector("#adults .value"));
+//        WebElement counterInput =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value"));
         WebElement decrementButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .down")));
-//        WebElement decrementButton = driver.findElement(By.cssSelector("#adults .down"));
-        WebElement incrementButton = driver.findElement(By.cssSelector("#adults .up"));
+//        WebElement decrementButton =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .down"));
+        WebElement incrementButton =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .up")));
         int counterValue = Integer.parseInt(counterInput.getText());
 
         if (counterValue == 1) {
@@ -416,10 +461,18 @@ public class TestSearchWidget {
         String xpath = String.format("//button[@aria-label='%s']", formattedDate);
         System.out.println(xpath);
 
-        WebElement dateButtonCheckIn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
-        wait.withTimeout(Duration.ofSeconds(80));
-        dateButtonCheckIn.click();
-
+//        WebElement dateButtonCheckIn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
+//        wait.withTimeout(Duration.ofSeconds(80));
+//        dateButtonCheckIn.click();
+        for (int attempts = 0; attempts < 3; attempts++) {
+            try {
+                WebElement dateButtonCheckIn = driver.findElement(By.xpath(xpath));
+                dateButtonCheckIn.click();
+                break;
+            } catch (StaleElementReferenceException e) {
+                System.out.println("Retrying to click on the calendar date...");
+            }
+        }
         /*driver.switchTo().frame(searchWidget);
         checkOutField.click();*/
 
@@ -450,10 +503,18 @@ public class TestSearchWidget {
 
         String newXPath = String.format("//button[@aria-label='%s']", newFormattedDate);
 
-        WebElement dateButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(newXPath)));
-        wait.withTimeout(Duration.ofSeconds(30));
-        dateButton.click();
-
+//        WebElement dateButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(newXPath)));
+//        wait.withTimeout(Duration.ofSeconds(30));
+//        dateButton.click();
+        for (int attempts = 0; attempts < 3; attempts++) {
+            try {
+                WebElement dateButton = driver.findElement(By.xpath(newXPath));
+                dateButton.click();
+                break;
+            } catch (StaleElementReferenceException e) {
+                System.out.println("Retrying to click on the calendar date...");
+            }
+        }
         driver.switchTo().defaultContent(); //back to main
 
         driver.switchTo().frame(searchWidget);
@@ -465,10 +526,10 @@ public class TestSearchWidget {
 //////////////////////////////////////////
 
         WebElement counterInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value")));
-//        WebElement counterInput = driver.findElement(By.cssSelector("#adults .value"));
+//        WebElement counterInput =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value"));
         WebElement decrementButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .down")));
-//        WebElement decrementButton = driver.findElement(By.cssSelector("#adults .down"));
-        WebElement incrementButton = driver.findElement(By.cssSelector("#adults .up"));
+//        WebElement decrementButton =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .down"));
+        WebElement incrementButton =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .up")));
         int counterValue = Integer.parseInt(counterInput.getText());
 
         if (counterValue == 1) {
@@ -585,10 +646,18 @@ public class TestSearchWidget {
         String xpath = String.format("//button[@aria-label='%s']", formattedDate);
         System.out.println(xpath);
 
-        WebElement dateButtonCheckIn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
-        wait.withTimeout(Duration.ofSeconds(30));
-        dateButtonCheckIn.click();
-
+//        WebElement dateButtonCheckIn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
+//        wait.withTimeout(Duration.ofSeconds(30));
+//        dateButtonCheckIn.click();
+        for (int attempts = 0; attempts < 3; attempts++) {
+            try {
+                WebElement dateButtonCheckIn = driver.findElement(By.xpath(xpath));
+                dateButtonCheckIn.click();
+                break;
+            } catch (StaleElementReferenceException e) {
+                System.out.println("Retrying to click on the calendar date...");
+            }
+        }
         /*driver.switchTo().frame(searchWidget);
         checkOutField.click();*/
 
@@ -612,10 +681,18 @@ public class TestSearchWidget {
 
         String newXPath = String.format("//button[@aria-label='%s']", newFormattedDate);
 
-        WebElement dateButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(newXPath)));
-        wait.withTimeout(Duration.ofSeconds(30));
-        dateButton.click();
-
+//        WebElement dateButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(newXPath)));
+////        wait.withTimeout(Duration.ofSeconds(30));
+//        dateButton.click();
+        for (int attempts = 0; attempts < 3; attempts++) {
+            try {
+                WebElement dateButton = driver.findElement(By.xpath(newXPath));
+                dateButton.click();
+                break;
+            } catch (StaleElementReferenceException e) {
+                System.out.println("Retrying to click on the calendar date...");
+            }
+        }
         driver.switchTo().defaultContent(); //back to main
 
         driver.switchTo().frame(searchWidget);
@@ -627,10 +704,10 @@ public class TestSearchWidget {
 
 
         WebElement counterInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value")));
-//        WebElement counterInput = driver.findElement(By.cssSelector("#adults .value"));
+//        WebElement counterInput =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value"));
         WebElement decrementButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .down")));
-//        WebElement decrementButton = driver.findElement(By.cssSelector("#adults .down"));
-        WebElement incrementButton = driver.findElement(By.cssSelector("#adults .up"));
+//        WebElement decrementButton =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .down"));
+        WebElement incrementButton =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .up")));
         int counterValue = Integer.parseInt(counterInput.getText());
 
         if (counterValue == 1) {
@@ -651,10 +728,10 @@ public class TestSearchWidget {
             Assert.fail("The counter value is not 1");
         }
         WebElement counterInputk = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#children .value")));
-//        WebElement counterInput = driver.findElement(By.cssSelector("#kids .value"));
+//        WebElement counterInput =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#kids .value"));
         WebElement decrementButtonk = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#children .down")));
-//        WebElement decrementButton = driver.findElement(By.cssSelector("#kids .down"));
-        WebElement incrementButtonk = driver.findElement(By.cssSelector("#children .up"));
+//        WebElement decrementButton =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#kids .down"));
+        WebElement incrementButtonk =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#children .up")));
         int counterValuek = Integer.parseInt(counterInputk.getText());
 
         if (counterValuek == 0) {
