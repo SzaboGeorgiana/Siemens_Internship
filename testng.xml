@@ -8,6 +8,9 @@
             <class name="org.example.TestContactPage" />
             <class name="org.example.TestExplorePage" />
             <class name="org.example.TestRoomsPage" />
+            <class name="org.example.TestSearchInRoomsPage" />
+            <class name="org.example.TestSearchWidget" />
+            <class name="org.example.TestStandardSuiteRoomPage" />
         </classes>
     </test>
 </suite>
