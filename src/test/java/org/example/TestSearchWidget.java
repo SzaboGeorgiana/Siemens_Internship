@@ -335,16 +335,20 @@ public void setUp() {
         System.out.println("The selected date is displayed in Check Out box");
 //////////////////////////////////////////
 
-        WebElement counterInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value")));
 //        WebElement counterInput =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value"));
-        WebElement decrementButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .down")));
+//        WebElement decrementButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .down")));
 //        WebElement decrementButton =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .down"));
-        WebElement incrementButton =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .up")));
+        WebElement counterInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value")));
+
         int counterValue = Integer.parseInt(counterInput.getText());
 
         if (counterValue == 1) {
             System.out.println("The value of adults counter is 1");
+            WebElement incrementButton =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .up")));
+
             incrementButton.click();
+            counterInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value")));
+
             int counterValue1 = Integer.parseInt(counterInput.getText());
             if (counterValue1 == 2) {
 
