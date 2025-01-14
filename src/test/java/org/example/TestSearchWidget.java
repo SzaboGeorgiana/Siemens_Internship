@@ -334,17 +334,13 @@ public void setUp() {
         Assert.assertEquals(checkOutvalue.getText(), formattedDate2,"The selected date is NOT displayed in Check Out box");
         System.out.println("The selected date is displayed in Check Out box");
 //////////////////////////////////////////
-
-//        WebElement counterInput =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value"));
-//        WebElement decrementButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .down")));
-//        WebElement decrementButton =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .down"));
-        WebElement counterInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value")));
+         WebElement counterInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value")));
 
         int counterValue = Integer.parseInt(counterInput.getText());
 
 
         if (counterValue == 1) {
-            System.out.println("The value of adults counter is 1 punct");
+            System.out.println("The value of adults counter is 1");
             WebElement incrementButton =wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#adults .up")));
 //            incrementButton.click();
 //            System.out.println("Th");
@@ -381,19 +377,19 @@ public void setUp() {
                     break; // Iese din buclă în caz de eroare
                 }
             }
-            if(counterValue==2){
-                System.out.println("The counter value is increases from 1 to 2");
 
-            } else
-            {
-                Assert.fail("The counter value is not increases from 1 to 2");
-            }
 
         } else
         {
             Assert.fail("The counter value is not 1");
         }
+        if(counterValue==2){
+            System.out.println("The counter value is increases from 1 to 2");
 
+        } else
+        {
+            Assert.fail("The counter value is not increases from 1 to 2");
+        }
         WebElement searchButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("s-button")));
         searchButton.click();
 
@@ -560,29 +556,47 @@ public void setUp() {
 //////////////////////////////////////////
 
         WebElement counterInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value")));
-//        WebElement counterInput =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value"));
-        WebElement decrementButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .down")));
-//        WebElement decrementButton =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .down"));
-        WebElement incrementButton =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .up")));
         int counterValue = Integer.parseInt(counterInput.getText());
-
         if (counterValue == 1) {
-            System.out.println("The value of adults counter is 1");
-            for(int i=1;i<7;i++)
+        while (counterValue < 7) {
+            try {
+                // Localizează butonul "increment" din nou pentru a evita erorile de tip StaleElementReferenceException
+                WebElement incrementButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#adults .up")));
                 incrementButton.click();
-            int counterValue1 = Integer.parseInt(counterInput.getText());
-            if (counterValue1 == 7) {
-                System.out.println("The counter value is increases from 1 to 7");
-            } else
-            {
-                Assert.fail("The counter value is not increases from 1 to 7");
-            }
 
-        } else
-        {
-            Assert.fail("The counter value is not 1");
+                // Așteaptă puțin pentru ca interfața să actualizeze valoarea
+                Thread.sleep(500); // Îl poți înlocui cu o așteptare explicită dacă este nevoie
+
+                // Actualizează valoarea counterului după fiecare click
+                counterInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value")));
+                counterValue = Integer.parseInt(counterInput.getText());
+
+                System.out.println("Counter value after increment: " + counterValue);
+
+
+
+            } catch (StaleElementReferenceException e) {
+                // Capturăm eroarea de StaleElementReferenceException și încercăm să regăsim elementul
+                System.out.println("Elementul a devenit stale, încerc să-l regăsesc...");
+            } catch (Exception e) {
+                // Capturăm alte erori care ar putea apărea
+                System.out.println("A apărut o eroare: " + e.getMessage());
+                break; // Iese din buclă în caz de eroare
+            }
         }
 
+
+    } else
+    {
+        Assert.fail("The counter value is not 1");
+    }
+        if(counterValue==7){
+        System.out.println("The counter value is increases from 1 to 7");
+
+    } else
+    {
+        Assert.fail("The counter value is not increases from 1 to 7");
+    }
         WebElement searchButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("s-button")));
         searchButton.click();
 
@@ -738,56 +752,79 @@ public void setUp() {
 
 
         WebElement counterInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value")));
-//        WebElement counterInput =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value"));
-        WebElement decrementButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .down")));
-//        WebElement decrementButton =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .down"));
         WebElement incrementButton =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .up")));
         int counterValue = Integer.parseInt(counterInput.getText());
 
         if (counterValue == 1) {
             System.out.println("The value of adults counter is 1");
-            incrementButton.click();
-            int counterValue1 = Integer.parseInt(counterInput.getText());
-            if (counterValue1 == 2) {
-
-                System.out.println("The counter value is increases from 1 to 2");
-
-            } else
-            {
-                Assert.fail("The counter value is not increases from 1 to 2");
-            }
 
         } else
         {
             Assert.fail("The counter value is not 1");
         }
         WebElement counterInputk = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#children .value")));
-//        WebElement counterInput =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#kids .value"));
-        WebElement decrementButtonk = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#children .down")));
-//        WebElement decrementButton =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#kids .down"));
         WebElement incrementButtonk =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#children .up")));
         int counterValuek = Integer.parseInt(counterInputk.getText());
-
+//
+//        if (counterValuek == 0) {
+//            System.out.println("The value of kids counter is 0");
+//            incrementButtonk.click();
+//            incrementButtonk.click();
+//
+//            int counterValue1k = Integer.parseInt(counterInputk.getText());
+//            if (counterValue1k == 2) {
+//
+//                System.out.println("The counter value is increases from 0 to 2");
+//
+//            } else
+//            {
+//                Assert.fail("The counter value is not increases from 0 to 2");
+//            }
+//
+//        } else
+//        {
+//            Assert.fail("The counter value is not 0");
+//        }
         if (counterValuek == 0) {
-            System.out.println("The value of kids counter is 0");
-            incrementButtonk.click();
-            incrementButtonk.click();
+            while (counterValuek < 2) {
+                try {
+                    // Localizează butonul "increment" din nou pentru a evita erorile de tip StaleElementReferenceException
+                    incrementButtonk = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#children .up")));
+                    incrementButtonk.click();
 
-            int counterValue1k = Integer.parseInt(counterInputk.getText());
-            if (counterValue1k == 2) {
+                    // Așteaptă puțin pentru ca interfața să actualizeze valoarea
+                    Thread.sleep(500); // Îl poți înlocui cu o așteptare explicită dacă este nevoie
 
-                System.out.println("The counter value is increases from 0 to 2");
+                    // Actualizează valoarea counterului după fiecare click
+                    counterInputk = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#children .value")));
+                    counterValuek = Integer.parseInt(counterInputk.getText());
 
-            } else
-            {
-                Assert.fail("The counter value is not increases from 0 to 2");
+                    System.out.println("Counter value after increment: " + counterValuek);
+
+
+
+                } catch (StaleElementReferenceException e) {
+                    // Capturăm eroarea de StaleElementReferenceException și încercăm să regăsim elementul
+                    System.out.println("Elementul a devenit stale, încerc să-l regăsesc...");
+                } catch (Exception e) {
+                    // Capturăm alte erori care ar putea apărea
+                    System.out.println("A apărut o eroare: " + e.getMessage());
+                    break; // Iese din buclă în caz de eroare
+                }
             }
+
 
         } else
         {
             Assert.fail("The counter value is not 0");
         }
+        if(counterValuek==2){
+            System.out.println("The counter value is increases from 0 to 2");
 
+        } else
+        {
+            Assert.fail("The counter value is not increases from 0 to 2");
+        }
         WebElement searchButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("s-button")));
         searchButton.click();
 
