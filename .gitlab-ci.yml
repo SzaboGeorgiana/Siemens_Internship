@@ -360,7 +360,7 @@ stages:
   artifacts:
     paths:
       - target/surefire-reports/
-      - target/surefire-reports/screenshots
+#      - target/surefire-reports/screenshots
     reports:
       junit: target/surefire-reports/*.xml
     expire_in: 1 week
