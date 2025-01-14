@@ -342,19 +342,46 @@ public void setUp() {
 
         int counterValue = Integer.parseInt(counterInput.getText());
 
+
         if (counterValue == 1) {
-            System.out.println("The value of adults counter is 1");
+            System.out.println("The value of adults counter is 1 punct");
             WebElement incrementButton =wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#adults .up")));
-            incrementButton.click();
-            System.out.println("Th");
+//            incrementButton.click();
+//            System.out.println("Th");
+//
+//            Thread.sleep(500); // Îl poți înlocui cu o așteptare explicită dacă este nevoie
+//
+//            counterInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value")));
+//
+//            int counterValue1 = Integer.parseInt(counterInput.getText());
+//            if (counterValue1 == 2) {
+            while (counterValue < 2) {
+                try {
+                    // Localizează butonul "increment" din nou pentru a evita erorile de tip StaleElementReferenceException
+                    incrementButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#adults .up")));
+                    incrementButton.click();
 
-            Thread.sleep(500); // Îl poți înlocui cu o așteptare explicită dacă este nevoie
+                    // Așteaptă puțin pentru ca interfața să actualizeze valoarea
+                    Thread.sleep(500); // Îl poți înlocui cu o așteptare explicită dacă este nevoie
 
-            counterInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value")));
+                    // Actualizează valoarea counterului după fiecare click
+                    counterInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value")));
+                    counterValue = Integer.parseInt(counterInput.getText());
 
-            int counterValue1 = Integer.parseInt(counterInput.getText());
-            if (counterValue1 == 2) {
+                    System.out.println("Counter value after increment: " + counterValue);
 
+
+
+                } catch (StaleElementReferenceException e) {
+                    // Capturăm eroarea de StaleElementReferenceException și încercăm să regăsim elementul
+                    System.out.println("Elementul a devenit stale, încerc să-l regăsesc...");
+                } catch (Exception e) {
+                    // Capturăm alte erori care ar putea apărea
+                    System.out.println("A apărut o eroare: " + e.getMessage());
+                    break; // Iese din buclă în caz de eroare
+                }
+            }
+            if(counterValue==2){
                 System.out.println("The counter value is increases from 1 to 2");
 
             } else
