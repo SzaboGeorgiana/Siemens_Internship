@@ -352,30 +352,11 @@ stages:
     - dos2unix ./config_proxy.sh
     - ./config_proxy.sh
 
-  script:
-    - echo "Running tests..."
-    - mkdir -p target/surefire-reports screenshots
-    - mvn clean test -Dtest=$TEST_CLASS || (
-      echo "Test failed. Capturing screenshot..." &&
-      xdotool key Print &&
-      if [ -f ~/Pictures/*.png ]; then
-      mv ~/Pictures/*.png screenshots/;
-      else
-      echo "No screenshots generated.";
-      fi
-      )
-    - echo "Listing generated files:"
-    - ls -R target/surefire-reports
-    - ls -R screenshots
-
   artifacts:
     paths:
       - target/surefire-reports/
-      - screenshots/
-
     reports:
       junit: target/surefire-reports/*.xml
-
     expire_in: 1 week
 
   cache:
@@ -428,12 +409,10 @@ stages:
 test_search_widget:
   stage: run_individual_individual_tests
   <<: *default_template
-#  script:
-#    - mvn test  -Dtest=org.example.TestSearchWidget
-  variables:
-    TEST_CLASS: org.example.TestSearchWidget
+  script:
+    - mvn test  -Dtest=org.example.TestSearchWidget
 
-#
+
 #test_rooms_search:
 #  stage: run_individual_individual_tests
 #  <<: *default_template
