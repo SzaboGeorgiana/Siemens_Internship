@@ -321,8 +321,10 @@
 
 #toate clasele in joburi diferite
 
+
 stages:
-  - run_individual_tests
+  #    - run_all_tests
+  - run_individual_individual_tests
 
 .default_template: &default_template
   image: ubuntu:22.04
@@ -337,7 +339,7 @@ stages:
 
   before_script:
     - echo "Installing required dependencies..."
-    - apt-get update && apt-get install -y wget unzip curl gnupg dos2unix maven chromium-browser
+    - apt-get update && apt-get install -y wget unzip curl gnupg dos2unix maven
     - echo "Setting up Xvfb for headless Chrome..."
     - Xvfb :99 &
     - export DISPLAY=:99
@@ -349,6 +351,7 @@ stages:
     - chmod +x ./config_proxy.sh
     - dos2unix ./config_proxy.sh
     - ./config_proxy.sh
+
   script:
     - echo "Running tests..."
     - mkdir -p target/surefire-reports screenshots
@@ -369,20 +372,15 @@ stages:
     paths:
       - target/surefire-reports/
       - screenshots/
+
     reports:
       junit: target/surefire-reports/*.xml
+
     expire_in: 1 week
 
   cache:
     paths:
       - .m2/repository
-
-test_search_widget:
-  stage: run_individual_tests
-  <<: *default_template
-  variables:
-    TEST_CLASS: org.example.TestSearchWidget
-
 #
 #test_all:
 # stage: run_all_tests
@@ -426,6 +424,14 @@ test_search_widget:
 #  <<: *default_template
 #  script:
 #    - mvn test -Dtest=org.example.TestChatWidget
+
+test_search_widget:
+  stage: run_individual_individual_tests
+  <<: *default_template
+#  script:
+#    - mvn test  -Dtest=org.example.TestSearchWidget
+  variables:
+    TEST_CLASS: org.example.TestSearchWidget
 
 #
 #test_rooms_search:
