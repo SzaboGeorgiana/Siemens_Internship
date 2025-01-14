@@ -374,7 +374,7 @@ public void setUp() {
                 } catch (Exception e) {
                     // Capturăm alte erori care ar putea apărea
                     System.out.println("A apărut o eroare: " + e.getMessage());
-//                    break; // Iese din buclă în caz de eroare
+                    break; // Iese din buclă în caz de eroare
                 }
             }
 
