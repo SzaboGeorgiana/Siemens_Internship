@@ -418,7 +418,7 @@ test_search_widget:
 #  script:
 #    - mvn test  -Dtest=org.example.TestSearchWidget
   variables:
-    TEST_CLASS: org.example.TestSearchWidget
+    TEST_CLASS: "org.example.TestSearchWidget"
 
 
 #test_rooms_search:
