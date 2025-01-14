@@ -349,10 +349,21 @@ stages:
     - chmod +x ./config_proxy.sh
     - dos2unix ./config_proxy.sh
     - ./config_proxy.sh
-
   script:
     - echo "Running tests..."
-    - mvn clean test -Dtest=$TEST_CLASS || (echo "Test failed. Capturing screenshot..." && mkdir -p screenshots && xdotool key Print && mv ~/Pictures/*.png screenshots/)
+    - mkdir -p target/surefire-reports screenshots
+    - mvn clean test -Dtest=$TEST_CLASS || (
+      echo "Test failed. Capturing screenshot..." &&
+      xdotool key Print &&
+      if [ -f ~/Pictures/*.png ]; then
+      mv ~/Pictures/*.png screenshots/;
+      else
+      echo "No screenshots generated.";
+      fi
+      )
+    - echo "Listing generated files:"
+    - ls -R target/surefire-reports
+    - ls -R screenshots
 
   artifacts:
     paths:
