@@ -1,9 +1,6 @@
 package org.example;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -39,7 +36,7 @@ public class TestStandardSuiteRoomPage {
     @BeforeMethod
     public void setUp() {
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless",  "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
+        options.addArguments("--headleeess",  "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
         driver = new ChromeDriver(options);
     }
 
@@ -178,8 +175,6 @@ public class TestStandardSuiteRoomPage {
             Assert.fail("The decrement button is not disabled at counter value 1");
         }
     }
-
-
     @Test
     public void verifyMaximumBoundary() throws InterruptedException {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -190,7 +185,10 @@ public class TestStandardSuiteRoomPage {
         driver.get("https://ancabota09.wixsite.com/intern/rooms/rooms/afda6ba1-efd1-4432-bd42-dd678bd4beb4");
         System.out.println("Page is loaded successfully");
 
+        // Scroll to iframe to ensure visibility
         WebElement iframeStandardSuite = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("nKphmK")));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", iframeStandardSuite);
+
         driver.switchTo().frame(iframeStandardSuite);
 
         // Step 3: Validate that the search widget is displayed
@@ -200,90 +198,152 @@ public class TestStandardSuiteRoomPage {
         } else {
             Assert.fail("The search widget is not displayed");
         }
-        // Step 4: Validate that the counter does not allow  exceeding the value 6
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+
+        // Step 4: Increment the counter step by step to 6
         WebElement counterInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value")));
-//        WebElement counterInput = driver.findElement(By.cssSelector("#adults .value"));
-        WebElement decrementButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .down")));
-//        WebElement decrementButton = driver.findElement(By.cssSelector("#adults .down"));
-        WebElement incrementButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .up")));
+        WebElement incrementButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#adults .up")));
+
         int counterValue = Integer.parseInt(counterInput.getText());
 
-        boolean isIncrementButtonDisabled = false;
-        if (counterValue < 1) {
-            Assert.fail("The counter value is below 1");
-        }
-        isIncrementButtonDisabled = incrementButton.getAttribute("disabled") != null;
-        if (isIncrementButtonDisabled) {
-            Assert.fail("The increment button is disabled at counter value 1");
-
-        } else {
-            System.out.println("The increment button is not disabled at counter value 1");
-        }
-        // Attempt to INCREMENT
-//        while (counterValue < 6) {
-//            incrementButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .up")));
-//            incrementButton.click();
-//            Thread.sleep(500); // Îl poți înlocui cu o așteptare explicită dacă timpul de răspuns variază
-//
-//            counterValue = Integer.parseInt(counterInput.getText());
-//            System.out.println("Counter value after increment: " + counterValue);
-//
-//            if (counterValue == 6) {
-//                // Check if the decrement button is disabled
-//                isIncrementButtonDisabled = incrementButton.getAttribute("disabled") != null;
-//                break;
-//            }
-//
-//        }
-// Asigură-te că ai initializat counterValue înainte de buclă
         while (counterValue < 6) {
             try {
-                // Localizează butonul "increment" din nou pentru a evita erorile de tip StaleElementReferenceException
-                incrementButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#adults .up")));
                 incrementButton.click();
+                Thread.sleep(500); // Așteaptă puțin pentru ca interfața să actualizeze valoarea
 
-                // Așteaptă puțin pentru ca interfața să actualizeze valoarea
-                Thread.sleep(500); // Îl poți înlocui cu o așteptare explicită dacă este nevoie
-
-                // Actualizează valoarea counterului după fiecare click
-                 counterInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value")));
+                counterInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value")));
                 counterValue = Integer.parseInt(counterInput.getText());
 
                 System.out.println("Counter value after increment: " + counterValue);
-
-                // Verifică dacă s-a ajuns la valoarea maximă
-                if (counterValue == 6) {
-                    // Verifică dacă butonul de incrementare este dezactivat
-                    String incrementButtonStatus = incrementButton.getAttribute("disabled");
-                     isIncrementButtonDisabled = incrementButtonStatus != null && incrementButtonStatus.equals("true");
-
-                    if (isIncrementButtonDisabled) {
-                        System.out.println("The increment button is disabled after reaching the maximum value.");
-                    }
-                    break; // Iese din buclă când se ajunge la valoarea maximă
-                }
-
-            } catch (StaleElementReferenceException e) {
-                // Capturăm eroarea de StaleElementReferenceException și încercăm să regăsim elementul
-                System.out.println("Elementul a devenit stale, încerc să-l regăsesc...");
-            } catch (Exception e) {
-                // Capturăm alte erori care ar putea apărea
-                System.out.println("A apărut o eroare: " + e.getMessage());
-                break; // Iese din buclă în caz de eroare
+            } catch (ElementClickInterceptedException e) {
+                System.out.println("Click intercepted, attempting to scroll to the button and retry...");
+                ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", incrementButton);
             }
         }
 
+        // Validate that the counter value is 6
+        if (counterValue == 6) {
+            System.out.println("Counter value is correctly set to 6.");
+        } else {
+            Assert.fail("Failed to reach counter value 6. Current value: " + counterValue);
+        }
+
+        // Validate that the increment button is disabled
+        boolean isIncrementButtonDisabled = incrementButton.getAttribute("disabled") != null;
         if (isIncrementButtonDisabled) {
             System.out.println("The increment button is disabled at counter value 6");
         } else {
             Assert.fail("The increment button is not disabled at counter value 6");
         }
     }
+
+
+
+
+//
+//    @Test
+//    public void verifyMaximumBoundary() throws InterruptedException {
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+//
+//        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+//        System.out.println("Loaded successfully");
+//
+//        driver.get("https://ancabota09.wixsite.com/intern/rooms/rooms/afda6ba1-efd1-4432-bd42-dd678bd4beb4");
+//        System.out.println("Page is loaded successfully");
+//
+//        WebElement iframeStandardSuite = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("nKphmK")));
+//        driver.switchTo().frame(iframeStandardSuite);
+//
+//        // Step 3: Validate that the search widget is displayed
+//        WebElement searchWidget = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("search")));
+//        if (searchWidget.isDisplayed()) {
+//            System.out.println("The search widget is displayed");
+//        } else {
+//            Assert.fail("The search widget is not displayed");
+//        }
+//        // Step 4: Validate that the counter does not allow  exceeding the value 6
+//        try {
+//            Thread.sleep(10000);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+//        WebElement counterInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value")));
+////        WebElement counterInput = driver.findElement(By.cssSelector("#adults .value"));
+//        WebElement decrementButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .down")));
+////        WebElement decrementButton = driver.findElement(By.cssSelector("#adults .down"));
+//        WebElement incrementButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .up")));
+//        int counterValue = Integer.parseInt(counterInput.getText());
+//
+//        boolean isIncrementButtonDisabled = false;
+//        if (counterValue < 1) {
+//            Assert.fail("The counter value is below 1");
+//        }
+//        isIncrementButtonDisabled = incrementButton.getAttribute("disabled") != null;
+//        if (isIncrementButtonDisabled) {
+//            Assert.fail("The increment button is disabled at counter value 1");
+//
+//        } else {
+//            System.out.println("The increment button is not disabled at counter value 1");
+//        }
+//        // Attempt to INCREMENT
+////        while (counterValue < 6) {
+////            incrementButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .up")));
+////            incrementButton.click();
+////            Thread.sleep(500); // Îl poți înlocui cu o așteptare explicită dacă timpul de răspuns variază
+////
+////            counterValue = Integer.parseInt(counterInput.getText());
+////            System.out.println("Counter value after increment: " + counterValue);
+////
+////            if (counterValue == 6) {
+////                // Check if the decrement button is disabled
+////                isIncrementButtonDisabled = incrementButton.getAttribute("disabled") != null;
+////                break;
+////            }
+////
+////        }
+//// Asigură-te că ai initializat counterValue înainte de buclă
+//        while (counterValue < 6) {
+//            try {
+//                // Localizează butonul "increment" din nou pentru a evita erorile de tip StaleElementReferenceException
+//                incrementButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#adults .up")));
+//                incrementButton.click();
+//
+//                // Așteaptă puțin pentru ca interfața să actualizeze valoarea
+//                Thread.sleep(500); // Îl poți înlocui cu o așteptare explicită dacă este nevoie
+//
+//                // Actualizează valoarea counterului după fiecare click
+//                 counterInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value")));
+//                counterValue = Integer.parseInt(counterInput.getText());
+//
+//                System.out.println("Counter value after increment: " + counterValue);
+//
+//                // Verifică dacă s-a ajuns la valoarea maximă
+//                if (counterValue == 6) {
+//                    // Verifică dacă butonul de incrementare este dezactivat
+//                    String incrementButtonStatus = incrementButton.getAttribute("disabled");
+//                     isIncrementButtonDisabled = incrementButtonStatus != null && incrementButtonStatus.equals("true");
+//
+//                    if (isIncrementButtonDisabled) {
+//                        System.out.println("The increment button is disabled after reaching the maximum value.");
+//                    }
+//                    break; // Iese din buclă când se ajunge la valoarea maximă
+//                }
+//
+//            } catch (StaleElementReferenceException e) {
+//                // Capturăm eroarea de StaleElementReferenceException și încercăm să regăsim elementul
+//                System.out.println("Elementul a devenit stale, încerc să-l regăsesc...");
+//            } catch (Exception e) {
+//                // Capturăm alte erori care ar putea apărea
+//                System.out.println("A apărut o eroare: " + e.getMessage());
+//                break; // Iese din buclă în caz de eroare
+//            }
+//        }
+//
+//        if (isIncrementButtonDisabled) {
+//            System.out.println("The increment button is disabled at counter value 6");
+//        } else {
+//            Assert.fail("The increment button is not disabled at counter value 6");
+//        }
+//    }
 
     @Test
     public void CheckOutOneDayAfterCheckIn() {
