@@ -408,15 +408,15 @@ stages:
 #  script:
 #    - mvn test -Dtest=org.example.TestChatWidget
 
-test_search_widget:
-  stage: run_individual_individual_tests
-  <<: *default_template
-  script:
-#    - mvn test  -Dtest=org.example.TestSearchWidget
-    - mvn clean test -Dtest="org.example.TestStandardSuiteRoomPage" || (echo "Test failed. Capturing screenshot..." && mkdir -p screenshots && xdotool key Print && mv ~/Pictures/*.png screenshots/)
-
-#  variables:
-#    TEST_CLASS: "org.example.TestStandardSuiteRoomPage"
+#test_search_widget:
+#  stage: run_individual_individual_tests
+#  <<: *default_template
+#  script:
+##    - mvn test  -Dtest=org.example.TestSearchWidget
+#    - mvn clean test -Dtest="org.example.TestSearchWidget" || (echo "Test failed. Capturing screenshot..." && mkdir -p screenshots && xdotool key Print && mv ~/Pictures/*.png screenshots/)
+#
+##  variables:
+##    TEST_CLASS: "org.example.TestStandardSuiteRoomPage"
 
 
 #test_rooms_search:
@@ -425,8 +425,8 @@ test_search_widget:
 #  script:
 #    - mvn test -Dtest=org.example.TestSearchInRoomsPage
 #
-#test_standard_suite:
-#  stage: run_individual_individual_tests
-#  <<: *default_template
-#  script:
-#    - mvn test -Dtest=org.example.TestStandardSuiteRoomPage
+test_standard_suite:
+  stage: run_individual_individual_tests
+  <<: *default_template
+  script:
+    - mvn test -Dtest=org.example.TestStandardSuiteRoomPage
