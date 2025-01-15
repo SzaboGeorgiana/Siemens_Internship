@@ -36,7 +36,7 @@ public class TestStandardSuiteRoomPage {
     @BeforeMethod
     public void setUp() {
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headleeess",  "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
+        options.addArguments("--headless",  "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
         driver = new ChromeDriver(options);
     }
 
