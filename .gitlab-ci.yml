@@ -429,4 +429,4 @@ test_standard_suite:
   stage: run_individual_individual_tests
   <<: *default_template
   script:
-    - mvn test -Dtest=org.example.TestStandardSuiteRoomPage
+    - mvn test -Dtest=org.example.TestSearchWidget

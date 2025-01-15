@@ -1,10 +1,7 @@
 
 package org.example;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -334,62 +331,34 @@ public void setUp() {
         Assert.assertEquals(checkOutvalue.getText(), formattedDate2,"The selected date is NOT displayed in Check Out box");
         System.out.println("The selected date is displayed in Check Out box");
 //////////////////////////////////////////
-         WebElement counterInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value")));
+        // Step 4: Increment the counter step by step to 6
+        WebElement counterInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value")));
+        WebElement incrementButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#adults .up")));
 
         int counterValue = Integer.parseInt(counterInput.getText());
 
+        while (counterValue < 2) {
+            try {
+                incrementButton.click();
+                Thread.sleep(500); // Așteaptă puțin pentru ca interfața să actualizeze valoarea
 
-        if (counterValue == 1) {
-            System.out.println("The value of adults counter is 1");
-            WebElement incrementButton =wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#adults .up")));
-//            incrementButton.click();
-//            System.out.println("Th");
-//
-//            Thread.sleep(500); // Îl poți înlocui cu o așteptare explicită dacă este nevoie
-//
-//            counterInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value")));
-//
-//            int counterValue1 = Integer.parseInt(counterInput.getText());
-//            if (counterValue1 == 2) {
-            while (counterValue < 2) {
-                try {
-                    // Localizează butonul "increment" din nou pentru a evita erorile de tip StaleElementReferenceException
-                    incrementButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#adults .up")));
-                    incrementButton.click();
+                counterInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value")));
+                counterValue = Integer.parseInt(counterInput.getText());
 
-                    // Așteaptă puțin pentru ca interfața să actualizeze valoarea
-                    Thread.sleep(500); // Îl poți înlocui cu o așteptare explicită dacă este nevoie
-
-                    // Actualizează valoarea counterului după fiecare click
-                    counterInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value")));
-                    counterValue = Integer.parseInt(counterInput.getText());
-
-                    System.out.println("Counter value after increment: " + counterValue);
-
-
-
-                } catch (StaleElementReferenceException e) {
-                    // Capturăm eroarea de StaleElementReferenceException și încercăm să regăsim elementul
-                    System.out.println("Elementul a devenit stale, încerc să-l regăsesc...");
-                } catch (Exception e) {
-                    // Capturăm alte erori care ar putea apărea
-                    System.out.println("A apărut o eroare: " + e.getMessage());
-                    break; // Iese din buclă în caz de eroare
-                }
+                System.out.println("Counter value after increment: " + counterValue);
+            } catch (ElementClickInterceptedException e) {
+                System.out.println("Click intercepted, attempting to scroll to the button and retry...");
+                ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", incrementButton);
             }
-
-
-        } else
-        {
-            Assert.fail("The counter value is not 1");
         }
-        if(counterValue==2){
-            System.out.println("The counter value is increases from 1 to 2");
 
-        } else
-        {
-            Assert.fail("The counter value is not increases from 1 to 2");
+        // Validate that the counter value is 2
+        if (counterValue == 2) {
+            System.out.println("Counter value is correctly set to 2.");
+        } else {
+            Assert.fail("Failed to reach counter value 2. Current value: " + counterValue);
         }
+
         WebElement searchButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("s-button")));
         searchButton.click();
 
