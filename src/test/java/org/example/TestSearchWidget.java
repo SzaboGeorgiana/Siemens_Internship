@@ -339,6 +339,8 @@ public void setUp() {
 
         while (counterValue < 2) {
             try {
+                ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", incrementButton);
+
                 incrementButton.click();
                 Thread.sleep(500); // Așteaptă puțin pentru ca interfața să actualizeze valoarea
 
