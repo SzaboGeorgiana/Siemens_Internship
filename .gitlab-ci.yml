@@ -351,8 +351,8 @@ stages:
     - chmod +x ./config_proxy.sh
     - dos2unix ./config_proxy.sh
     - ./config_proxy.sh
-  script:
-    - mvn clean test -Dtest=$TEST_CLASS
+#  script:
+#    - mvn clean test -Dtest=$TEST_CLASS
   artifacts:
     paths:
       - target/surefire-reports/
@@ -411,12 +411,12 @@ stages:
 test_search_widget:
   stage: run_individual_individual_tests
   <<: *default_template
-#  script:
-##    - mvn test  -Dtest=org.example.TestSearchWidget
-#    - mvn clean test -Dtest="org.example.TestSearchWidget" || (echo "Test failed. Capturing screenshot..." && mkdir -p screenshots && xdotool key Print && mv ~/Pictures/*.png screenshots/)
+  script:
+#    - mvn test  -Dtest=org.example.TestSearchWidget
+    - mvn clean test -Dtest="org.example.TestStandardSuiteRoomPage" || (echo "Test failed. Capturing screenshot..." && mkdir -p screenshots && xdotool key Print && mv ~/Pictures/*.png screenshots/)
 
-  variables:
-    TEST_CLASS: "org.example.TestStandardSuiteRoomPage"
+#  variables:
+#    TEST_CLASS: "org.example.TestStandardSuiteRoomPage"
 
 
 #test_rooms_search:
