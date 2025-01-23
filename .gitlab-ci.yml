@@ -367,7 +367,7 @@ stages:
     expire_in: 1 week
 
 test_search_widget:
-  stage: run_individual_tests
+  stage: run_individual_individual_tests
   <<: *default_template
   script:
     - echo "Running tests..."
