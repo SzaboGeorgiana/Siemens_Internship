@@ -432,7 +432,7 @@ public class TestSearchWidget {
         WebElement incrementButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#adults .up")));
 
         int counterValue = Integer.parseInt(counterInput.getText());
-
+        int incercari=3;
         while (counterValue < 2) {
             try {
                 ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", incrementButton);
@@ -446,7 +446,10 @@ public class TestSearchWidget {
                 System.out.println("Counter value after increment: " + counterValue);
             } catch (ElementClickInterceptedException e) {
                 System.out.println("Click intercepted, attempting to scroll to the button and retry...");
+                incercari-=1;
                 ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", incrementButton);
+                if(incercari==0)
+                    break;
             }
         }
 
