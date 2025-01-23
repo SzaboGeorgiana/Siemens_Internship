@@ -351,19 +351,27 @@ stages:
     - chmod +x ./config_proxy.sh
     - dos2unix ./config_proxy.sh
     - ./config_proxy.sh
-#  script:
-#    - mvn clean test -Dtest=$TEST_CLASS
-  artifacts:
-    paths:
-      - target/surefire-reports/
-#      - target/surefire-reports/screenshots
-    reports:
-      junit: target/surefire-reports/*.xml
-    expire_in: 1 week
+    - echo "Creating directory for screenshots..."
+    - mkdir -p screenshots
 
   cache:
     paths:
       - .m2/repository
+
+  artifacts:
+    paths:
+      - target/surefire-reports/
+      - screenshots/ # Include screenshots directory in artifacts
+    reports:
+      junit: target/surefire-reports/*.xml
+    expire_in: 1 week
+
+test_search_widget:
+  stage: run_individual_tests
+  <<: *default_template
+  script:
+    - echo "Running tests..."
+    - mvn clean test -Dtest="org.example.TestSearchWidget"
 #
 #test_all:
 # stage: run_all_tests
@@ -408,13 +416,6 @@ stages:
 #  script:
 #    - mvn test -Dtest=org.example.TestChatWidget
 
-#test_search_widget:
-#  stage: run_individual_individual_tests
-#  <<: *default_template
-#  script:
-##    - mvn test  -Dtest=org.example.TestSearchWidget
-#    - mvn clean test -Dtest="org.example.TestSearchWidget" || (echo "Test failed. Capturing screenshot..." && mkdir -p screenshots && xdotool key Print && mv ~/Pictures/*.png screenshots/)
-#
 ##  variables:
 ##    TEST_CLASS: "org.example.TestStandardSuiteRoomPage"
 
@@ -425,8 +426,8 @@ stages:
 #  script:
 #    - mvn test -Dtest=org.example.TestSearchInRoomsPage
 #
-test_standard_suite:
-  stage: run_individual_individual_tests
-  <<: *default_template
-  script:
-    - mvn test -Dtest=org.example.TestSearchWidget
+#test_standard_suite:
+#  stage: run_individual_individual_tests
+#  <<: *default_template
+#  script:
+#    - mvn test -Dtest=org.example.TestStandardSuiteRoomPage

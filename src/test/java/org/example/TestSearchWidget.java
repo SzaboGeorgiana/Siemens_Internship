@@ -1,5 +1,6 @@
-
+//
 package org.example;
+import org.apache.commons.io.FileUtils;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -7,8 +8,13 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.ITestResult;
 import org.testng.annotations.*;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -20,34 +26,114 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+//
+//public class TestSearchWidget {
+//
+//    private WebDriver driver;
+//
+////    @BeforeClass
+////    public void beforeClass() {
+//////        driver = new ChromeDriver();
+////        ChromeOptions options = new ChromeOptions();
+////        options.addArguments("--headless");
+////        options.addArguments("--disable-gpu");
+////        options.addArguments("--no-sandbox");
+////        options.addArguments("--disable-dev-shm-usage");
+////        driver = new ChromeDriver(options);
+////    }
+////    @AfterClass
+////    public void afterClass() {
+////        driver.quit();
+////    }
+//@BeforeMethod
+//public void setUp() {
+//    ChromeOptions options = new ChromeOptions();
+//    options.addArguments("--headless",  "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
+//    driver = new ChromeDriver(options);
+//}
+//
+//    @AfterMethod
+//    public void tearDown() {
+//        driver.quit();
+//    }
+//
+//    @Test
+//    public void verifyMinimumBoundary() {
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+//
+//        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+//        System.out.println("Loaded successfully");
+//
+//        driver.get("https://ancabota09.wixsite.com/intern");
+//        System.out.println("Page is loaded successfully");
+//
+//
+//        // Step 3: Validate that the search widget is displayed
+//        WebElement searchWidget = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("nKphmK")));
+//        if (searchWidget.isDisplayed()) {
+//            System.out.println("The search widget is displayed");
+//        } else {
+//            Assert.fail("The search widget is not displayed");
+//        }
+//
+//        // Step 4: Validate that the counter does not allow the value to fall below 1
+//
+//        driver.switchTo().frame(searchWidget);
+//        WebElement counterInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value")));
+////        WebElement counterInput =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value"));
+//        WebElement decrementButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .down")));
+////        WebElement decrementButton =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .down"));
+//        WebElement incrementButton =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .up")));
+//
+//        int counterValue = Integer.parseInt(counterInput.getText());
+//        boolean isDecrementButtonDisabled = false;
+//        if (counterValue == 1) {
+//            isDecrementButtonDisabled = decrementButton.getAttribute("disabled") != null;
+//            System.out.println("The value of adults counter is 1");
+//        }
+//        else
+//            if (counterValue < 1) {
+//                Assert.fail("The counter value is below 1");
+//            }
+//            else {
+//            // Attempt to decrement the counter and check if it becomes disabled at value 1
+//            while (counterValue > 1) {
+//                decrementButton.click();
+//                counterValue = Integer.parseInt(counterInput.getText());
+//                System.out.println("Counter value after decrement: " + counterValue);
+//                if (counterValue == 1) {
+//                    // Check if the decrement button is disabled
+//                    isDecrementButtonDisabled = decrementButton.getAttribute("disabled")  != null;
+//                    break;
+//                }
+//            }
+//        }
+//
+//        if (isDecrementButtonDisabled) {
+//            System.out.println("The decrement button is disabled at counter value 1");
+//        } else {
+//            Assert.fail("The decrement button is not disabled at counter value 1");
+//        }
+//    }
+
 
 public class TestSearchWidget {
 
     private WebDriver driver;
 
-//    @BeforeClass
-//    public void beforeClass() {
-////        driver = new ChromeDriver();
-//        ChromeOptions options = new ChromeOptions();
-//        options.addArguments("--headless");
-//        options.addArguments("--disable-gpu");
-//        options.addArguments("--no-sandbox");
-//        options.addArguments("--disable-dev-shm-usage");
-//        driver = new ChromeDriver(options);
-//    }
-//    @AfterClass
-//    public void afterClass() {
-//        driver.quit();
-//    }
-@BeforeMethod
-public void setUp() {
-    ChromeOptions options = new ChromeOptions();
-    options.addArguments("--headless",  "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
-    driver = new ChromeDriver(options);
-}
+    @BeforeMethod
+    public void setUp() {
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless", "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
+        driver = new ChromeDriver(options);
+    }
 
     @AfterMethod
-    public void tearDown() {
+    public void tearDown(ITestResult result) {
+        // Check if the test failed
+        if (!result.isSuccess()) {
+            TestUtils.captureScreenshot(driver, result.getName());
+        }
         driver.quit();
     }
 
@@ -61,43 +147,35 @@ public void setUp() {
         driver.get("https://ancabota09.wixsite.com/intern");
         System.out.println("Page is loaded successfully");
 
-
         // Step 3: Validate that the search widget is displayed
         WebElement searchWidget = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("nKphmK")));
         if (searchWidget.isDisplayed()) {
             System.out.println("The search widget is displayed");
         } else {
-            Assert.fail("The search widget is not displayed");
+            throw new AssertionError("The search widget is not displayed");
         }
 
         // Step 4: Validate that the counter does not allow the value to fall below 1
 
         driver.switchTo().frame(searchWidget);
         WebElement counterInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value")));
-//        WebElement counterInput =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .value"));
         WebElement decrementButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .down")));
-//        WebElement decrementButton =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .down"));
-        WebElement incrementButton =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#adults .up")));
 
         int counterValue = Integer.parseInt(counterInput.getText());
         boolean isDecrementButtonDisabled = false;
+
         if (counterValue == 1) {
             isDecrementButtonDisabled = decrementButton.getAttribute("disabled") != null;
             System.out.println("The value of adults counter is 1");
-        }
-        else
-            if (counterValue < 1) {
-                Assert.fail("The counter value is below 1");
-            }
-            else {
-            // Attempt to decrement the counter and check if it becomes disabled at value 1
+        } else if (counterValue < 1) {
+            throw new AssertionError("The counter value is below 1");
+        } else {
             while (counterValue > 1) {
                 decrementButton.click();
                 counterValue = Integer.parseInt(counterInput.getText());
                 System.out.println("Counter value after decrement: " + counterValue);
                 if (counterValue == 1) {
-                    // Check if the decrement button is disabled
-                    isDecrementButtonDisabled = decrementButton.getAttribute("disabled")  != null;
+                    isDecrementButtonDisabled = decrementButton.getAttribute("disabled") != null;
                     break;
                 }
             }
@@ -106,9 +184,27 @@ public void setUp() {
         if (isDecrementButtonDisabled) {
             System.out.println("The decrement button is disabled at counter value 1");
         } else {
-            Assert.fail("The decrement button is not disabled at counter value 1");
+            throw new AssertionError("The decrement button is not disabled at counter value 1");
         }
     }
+
+
+    public static void captureScreenshot(WebDriver driver, String testName) {
+        String timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        String screenshotName = testName + "_" + timestamp + ".png";
+        String screenshotPath = "screenshots/" + screenshotName;
+
+        File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+
+        try {
+            FileUtils.copyFile(screenshot, new File(screenshotPath));
+            System.out.println("Screenshot saved: " + screenshotPath);
+        } catch (IOException e) {
+            System.err.println("Failed to save screenshot: " + e.getMessage());
+        }
+    }
+
+
 
     @Test
     public void CheckOutOneDayAfterCheckIn() {
