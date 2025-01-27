@@ -353,7 +353,7 @@ stages:
     - ./config_proxy.sh
 #    - echo "Creating directory for screenshots..."
 #    - mkdir -p screenshots
-
+    - mkdir -p target/artifacts # Ensure artifacts directory exists
   cache:
     paths:
       - .m2/repository
