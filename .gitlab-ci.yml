@@ -351,8 +351,8 @@ stages:
     - chmod +x ./config_proxy.sh
     - dos2unix ./config_proxy.sh
     - ./config_proxy.sh
-    - echo "Creating directory for screenshots..."
-    - mkdir -p screenshots
+#    - echo "Creating directory for screenshots..."
+#    - mkdir -p screenshots
 
   cache:
     paths:
@@ -361,7 +361,7 @@ stages:
   artifacts:
     paths:
       - target/surefire-reports/
-      - screenshots/ # Include screenshots directory in artifacts
+      - target/artifacts/*.png # Include screenshots directory in artifacts
     reports:
       junit: target/surefire-reports/*.xml
     expire_in: 1 week
