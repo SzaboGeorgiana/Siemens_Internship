@@ -359,6 +359,7 @@ stages:
       - .m2/repository
 
   artifacts:
+    when: always
     paths:
       - target/surefire-reports/
       - target/artifacts/*.png # Include screenshots directory in artifacts
@@ -372,6 +373,27 @@ test_search_widget:
   script:
     - echo "Running tests..."
     - mvn clean test -Dtest="org.example.TestSearchWidget"
+
+
+
+
+
+
+
+
+
+
+
+
+
+#
+#      script:#
+#        - mvn test -Dtest="RoomsPage#testSearchButtonValidInput+testSearchButtonInvalidInput+testBook"
+#        - pwd
+#        - ls -al
+#        - mvn test -Dtest="RoomsPage"
+#        - pwd
+#        - ls -al                                                                                                                                                                               - Screenshots    reports:      junit: target/surefire-reports/*.xml    expire_in: 1 week
 #
 #test_all:
 # stage: run_all_tests
