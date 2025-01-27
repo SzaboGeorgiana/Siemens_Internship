@@ -375,26 +375,6 @@ test_search_widget:
     - mvn clean test -Dtest="org.example.TestSearchWidget"
 
 
-
-
-
-
-
-
-
-
-
-
-
-#
-#      script:#
-#        - mvn test -Dtest="RoomsPage#testSearchButtonValidInput+testSearchButtonInvalidInput+testBook"
-#        - pwd
-#        - ls -al
-#        - mvn test -Dtest="RoomsPage"
-#        - pwd
-#        - ls -al                                                                                                                                                                               - Screenshots    reports:      junit: target/surefire-reports/*.xml    expire_in: 1 week
-#
 #test_all:
 # stage: run_all_tests
 # <<: *default_template
