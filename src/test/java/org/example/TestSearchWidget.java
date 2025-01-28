@@ -426,6 +426,7 @@ public class TestSearchWidget {
         driver.switchTo().frame(searchWidget);
         WebElement checkOutvalue = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("check-out-value")));
         String formattedDate2 = threeDaysAfter.format(newFormatter);
+        String string_check_out=checkOutvalue.getText();
 
         Assert.assertEquals(checkOutvalue.getText(), formattedDate2,"The selected date is NOT displayed in Check Out box");
         System.out.println("The selected date is displayed in Check Out box");
@@ -498,7 +499,7 @@ public class TestSearchWidget {
         wait.until(ExpectedConditions.elementToBeClickable(checkoutvalue1));
 
         // Verifică dacă datele coincid
-        if (Objects.equals(checkOutvalue.getText(), checkoutvalue1.getText()) && Objects.equals(checkinvalue.getText(), checkinvalue1.getText())) {
+        if (Objects.equals(string_check_out, checkoutvalue1.getText()) && Objects.equals(checkinvalue.getText(), checkinvalue1.getText())) {
             System.out.println("with selected data");
         } else {
             System.out.println("not coresponding data...");
