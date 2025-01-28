@@ -1,9 +1,6 @@
 package org.example;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -456,8 +453,17 @@ public class TestRoomsPage {
 
         WebElement dateButtonCheckIn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
         wait.withTimeout(Duration.ofSeconds(60));
-        dateButtonCheckIn.click();
+//        dateButtonCheckIn.click();
 
+        for (int attempts = 0; attempts < 3; attempts++) {
+            try {
+                 dateButtonCheckIn = driver.findElement(By.xpath(xpath));
+                dateButtonCheckIn.click();
+                break;
+            } catch (StaleElementReferenceException e) {
+                System.out.println("Retrying to click on the calendar date...");
+            }
+        }
         WebElement checkinvalue = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("check_in-value")));
         String formattedDate1 = today.format(newFormatter);
 
