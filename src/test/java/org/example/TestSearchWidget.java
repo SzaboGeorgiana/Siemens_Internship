@@ -447,7 +447,7 @@ public class TestSearchWidget {
             } catch (ElementClickInterceptedException e) {
                 System.out.println("Click intercepted, attempting to scroll to the button and retry...");
                 incercari-=1;
-                ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", incrementButton);
+//                ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", incrementButton);
                 if(incercari==0)
                     break;
             }
