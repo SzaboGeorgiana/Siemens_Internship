@@ -449,7 +449,7 @@ public class TestSearchWidget {
             } catch (ElementClickInterceptedException e) {
                 System.out.println("Click intercepted, attempting to scroll to the button and retry...");
                 incercari-=1;
-//                ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", incrementButton);
+                ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", incrementButton);
                 if(incercari==0)
                     break;
             }
@@ -487,6 +487,7 @@ public class TestSearchWidget {
 
         driver.switchTo().frame(iframe);
         wait.withTimeout(Duration.ofSeconds(60));
+        System.out.println("in iframe");
 
         WebElement checkinvalue1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("check-in")));
         WebElement checkoutvalue1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("check-out")));
