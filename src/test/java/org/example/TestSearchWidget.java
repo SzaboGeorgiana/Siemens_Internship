@@ -489,9 +489,13 @@ public class TestSearchWidget {
         driver.switchTo().frame(iframe);
         wait.withTimeout(Duration.ofSeconds(60));
         System.out.println("in iframe");
-
-        WebElement checkinvalue1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("check-in")));
-        WebElement checkoutvalue1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("check-out")));
+//
+//        WebElement checkinvalue1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("check-in")));
+//        WebElement checkoutvalue1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("check-out")));
+        WebElement checkinvalue1 = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("check-in")));
+        wait.until(ExpectedConditions.elementToBeClickable(checkinvalue1));
+        WebElement checkoutvalue1 = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("check-out")));
+        wait.until(ExpectedConditions.elementToBeClickable(checkoutvalue1));
 
         // Verifică dacă datele coincid
         if (Objects.equals(checkOutvalue.getText(), checkoutvalue1.getText()) && Objects.equals(checkinvalue.getText(), checkinvalue1.getText())) {
