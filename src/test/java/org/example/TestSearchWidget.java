@@ -126,7 +126,8 @@ public class TestSearchWidget {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless", "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
         driver = new ChromeDriver(options);
-        driver.manage().window().setSize(new Dimension(1280, 800)); // exemplu rezoluție
+//        driver.manage().window().setSize(new Dimension(1280, 800)); // exemplu rezoluție
+        driver.manage().window().setSize(new Dimension(1024, 768)); // Rezoluție mai mică
 
     }
 
