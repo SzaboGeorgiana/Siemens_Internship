@@ -465,11 +465,19 @@ public class TestSearchWidget {
         WebElement searchButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("s-button")));
         searchButton.click();
 
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         String currentUrl = driver.getCurrentUrl();
         if(currentUrl.contains("https://ancabota09.wixsite.com/intern/rooms")) {
             System.out.println("The rooms page is loaded");
         }
         else {
+            System.out.println(currentUrl);
+
             Assert.fail( "Bad redirect");
         }
 
@@ -837,26 +845,6 @@ public class TestSearchWidget {
         WebElement counterInputk = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#children .value")));
         WebElement incrementButtonk =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#children .up")));
         int counterValuek = Integer.parseInt(counterInputk.getText());
-//
-//        if (counterValuek == 0) {
-//            System.out.println("The value of kids counter is 0");
-//            incrementButtonk.click();
-//            incrementButtonk.click();
-//
-//            int counterValue1k = Integer.parseInt(counterInputk.getText());
-//            if (counterValue1k == 2) {
-//
-//                System.out.println("The counter value is increases from 0 to 2");
-//
-//            } else
-//            {
-//                Assert.fail("The counter value is not increases from 0 to 2");
-//            }
-//
-//        } else
-//        {
-//            Assert.fail("The counter value is not 0");
-//        }
         if (counterValuek == 0) {
             while (counterValuek < 2) {
                 try {
