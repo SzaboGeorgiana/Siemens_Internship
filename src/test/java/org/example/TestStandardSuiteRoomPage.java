@@ -38,6 +38,8 @@ public class TestStandardSuiteRoomPage {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless",  "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage");
         driver = new ChromeDriver(options);
+        driver.manage().window().setSize(new Dimension(1424, 968)); // Rezoluție mai mică
+
     }
 
     @AfterMethod

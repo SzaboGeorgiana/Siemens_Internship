@@ -2,6 +2,7 @@
 package org.example;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -33,6 +34,8 @@ public class TestExplorePage {
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
         driver = new ChromeDriver(options);
+        driver.manage().window().setSize(new Dimension(1424, 968)); // Rezoluție mai mică
+
     }
 
     @AfterClass

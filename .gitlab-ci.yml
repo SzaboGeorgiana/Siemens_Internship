@@ -381,55 +381,55 @@ test_search_widget:
 # script:
 #  -  mvn clean test -X #x de la debug
 
+
+test_nav_bar:
+  stage: run_individual_individual_tests
+  <<: *default_template
+  script:
+    - mvn clean test -Dtest=org.example.TestNavBar
 #
-#test_nav_bar:
-#  stage: run_individual_individual_tests
-#  <<: *default_template
-#  script:
-#    - mvn test -Dtest=org.example.TestNavBar
-##
-#test_footer:
-#  stage: run_individual_individual_tests
-#  <<: *default_template
-#  script:
-#    - mvn test -Dtest=org.example.TestSocialMediaIcons
-#
-#test_contact_page:
-#  stage: run_individual_individual_tests
-#  <<: *default_template
-#  script:
-#    - mvn test -Dtest=org.example.TestContactPage
-#
-#test_explore_page:
-#  stage: run_individual_individual_tests
-#  <<: *default_template
-#  script:
-#    - mvn test -Dtest=org.example.TestExplorePage
-#
-#test_rooms_page:
-#  stage: run_individual_individual_tests
-#  <<: *default_template
-#  script:
-#    - mvn test -Dtest=org.example.TestRoomsPage
-#
-#test_chat_widget:
-#  stage: run_individual_individual_tests
-#  <<: *default_template
-#  script:
-#    - mvn test -Dtest=org.example.TestChatWidget
+test_footer:
+  stage: run_individual_individual_tests
+  <<: *default_template
+  script:
+    - mvn clean test -Dtest=org.example.TestSocialMediaIcons
+
+test_contact_page:
+  stage: run_individual_individual_tests
+  <<: *default_template
+  script:
+    - mvn clean test -Dtest=org.example.TestContactPage
+
+test_explore_page:
+  stage: run_individual_individual_tests
+  <<: *default_template
+  script:
+    - mvn clean test -Dtest=org.example.TestExplorePage
+
+test_rooms_page:
+  stage: run_individual_individual_tests
+  <<: *default_template
+  script:
+    - mvn clean test -Dtest=org.example.TestRoomsPage
+
+test_chat_widget:
+  stage: run_individual_individual_tests
+  <<: *default_template
+  script:
+    - mvn clean test -Dtest=org.example.TestChatWidget
 
 ##  variables:
 ##    TEST_CLASS: "org.example.TestStandardSuiteRoomPage"
 
 
-#test_rooms_search:
-#  stage: run_individual_individual_tests
-#  <<: *default_template
-#  script:
-#    - mvn test -Dtest=org.example.TestSearchInRoomsPage
-#
-#test_standard_suite:
-#  stage: run_individual_individual_tests
-#  <<: *default_template
-#  script:
-#    - mvn test -Dtest=org.example.TestStandardSuiteRoomPage
+test_rooms_search:
+  stage: run_individual_individual_tests
+  <<: *default_template
+  script:
+    - mvn clean test -Dtest=org.example.TestSearchInRoomsPage
+
+test_standard_suite:
+  stage: run_individual_individual_tests
+  <<: *default_template
+  script:
+    - mvn clean test -Dtest=org.example.TestStandardSuiteRoomPage
