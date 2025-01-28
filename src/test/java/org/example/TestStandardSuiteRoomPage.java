@@ -328,7 +328,7 @@ public class TestStandardSuiteRoomPage {
         driver.findElement(By.id("check-in")).click();
 
         LocalDate today = LocalDate.now();
-        LocalDate after3days = today.plusDays(4);
+        LocalDate after3days = today.plusDays(3);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d, EEEE MMMM yyyy", Locale.ENGLISH);
         DateTimeFormatter newFormatter = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);

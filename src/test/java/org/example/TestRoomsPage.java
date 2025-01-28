@@ -584,8 +584,8 @@ public class TestRoomsPage {
             Assert.fail("The check In Calendar is not displayed");
         }
 
-        LocalDate tomorrow = LocalDate.now().plusDays(1);
-        LocalDate threeDaysAfter1 = tomorrow.plusDays(3);
+        LocalDate tomorrow = LocalDate.now().plusDays(5);
+        LocalDate threeDaysAfter1 = tomorrow.plusDays(7);
 
 //        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d, EEEE MMMM yyyy", Locale.ENGLISH);
 //        DateTimeFormatter newFormatter = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH);
