@@ -391,7 +391,7 @@ public class TestSearchWidget {
 
         Assert.assertEquals(checkinvalue.getText(), formattedDate1,"The selected date is NOT displayed in Check In box");
         System.out.println("The selected date is displayed in Check In box");
-
+        String string_check_in=checkinvalue.getText();
 
         driver.switchTo().defaultContent(); //back to main
 
@@ -499,7 +499,7 @@ public class TestSearchWidget {
         wait.until(ExpectedConditions.elementToBeClickable(checkoutvalue1));
 
         // Verifică dacă datele coincid
-        if (Objects.equals(string_check_out, checkoutvalue1.getText()) && Objects.equals(checkinvalue.getText(), checkinvalue1.getText())) {
+        if (Objects.equals(string_check_out, checkoutvalue1.getText()) && Objects.equals(string_check_in, checkinvalue1.getText())) {
             System.out.println("with selected data");
         } else {
             System.out.println("not coresponding data...");
